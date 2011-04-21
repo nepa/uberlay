@@ -12,4 +12,11 @@ public class LinkMetric {
 	public long getMetric() {
 		return metric;
 	}
+
+	@Override
+	public String toString() {
+		return "LinkMetric{" +
+				"metric=" + metric +
+				'}';
+	}
 }

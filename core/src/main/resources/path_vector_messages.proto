@@ -25,10 +25,15 @@ package de.uniluebeck.itm.uberlay.core.protocols.pvp;
 
 option optimize_for = SPEED;
 
-message PathVectorProtocolRequest {
+message PathVectorUpdate {
 
-}
+	message RoutingTableEntry {
+		required string destination = 1;
+		required int64 cost = 2;
+		repeated string path = 3;
+	}
 
-message PathVectorProtocolResponse {
+	required string sender = 1;
+	repeated RoutingTableEntry routingTableEntries = 2;
 
 }

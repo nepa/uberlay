@@ -25,8 +25,8 @@ public class RoundtripTimeProtocolHandler extends SimpleChannelHandler {
 		public void run() {
 			if (channel != null) {
 				long now = System.currentTimeMillis();
-				RoundtripTimeProtocol.RoundtripTimeRequest rttRequest =
-						RoundtripTimeProtocol.RoundtripTimeRequest.newBuilder()
+				RoundtripTimeMessages.RoundtripTimeRequest rttRequest =
+						RoundtripTimeMessages.RoundtripTimeRequest.newBuilder()
 								.setUnixEpochInMillis(now)
 								.build();
 				channel.write(rttRequest);
@@ -39,12 +39,12 @@ public class RoundtripTimeProtocolHandler extends SimpleChannelHandler {
 
 	private Channel channel;
 
-	public RoundtripTimeProtocolHandler(final ScheduledExecutorService executorService, final int rttRequestDelay,
-										final TimeUnit rttRequestTimeunit) {
+	public RoundtripTimeProtocolHandler(final ScheduledExecutorService executorService, final int rttRequestInterval,
+										final TimeUnit rttRequestIntervalTimeunit) {
 
 		this.executorService = executorService;
-		this.rttRequestDelay = rttRequestDelay;
-		this.rttRequestTimeunit = rttRequestTimeunit;
+		this.rttRequestDelay = rttRequestInterval;
+		this.rttRequestTimeunit = rttRequestIntervalTimeunit;
 	}
 
 	@Override
@@ -54,6 +54,8 @@ public class RoundtripTimeProtocolHandler extends SimpleChannelHandler {
 
 		channel = null;
 		sendRttRequestRunnableSchedule.cancel(false);
+
+		super.channelDisconnected(ctx, e);
 	}
 
 	@Override
@@ -62,37 +64,64 @@ public class RoundtripTimeProtocolHandler extends SimpleChannelHandler {
 		assert channel == null;
 
 		channel = e.getChannel();
-		sendRttRequestRunnableSchedule = executorService.schedule(
+		sendRttRequestRunnableSchedule = executorService.scheduleWithFixedDelay(
 				sendRttRequestRunnable,
+				0,
 				rttRequestDelay,
 				rttRequestTimeunit
 		);
+
+		super.channelConnected(ctx, e);
 	}
 
 	@Override
 	public void messageReceived(final ChannelHandlerContext ctx, final MessageEvent e) throws Exception {
 
-		if (e.getMessage() instanceof RoundtripTimeProtocol.RoundtripTimeResponse) {
-
-			RoundtripTimeProtocol.RoundtripTimeResponse rttResponse =
-					(RoundtripTimeProtocol.RoundtripTimeResponse) e.getMessage();
-
-			long now = System.currentTimeMillis();
-			long diff = now - rttResponse.getRequestUnixEpochInMillis();
-
-			// ignore faulty input message
-			if (diff > 0) {
-				ctx.sendUpstream(new UpstreamMessageEvent(
-						ctx.getChannel(),
-						new LinkMetric(diff),
-						ctx.getChannel().getRemoteAddress()
-				)
-				);
-			}
-
+		if (e.getMessage() instanceof RoundtripTimeMessages.RoundtripTimeRequest) {
+			handleRequest(ctx, e);
+		} else if (e.getMessage() instanceof RoundtripTimeMessages.RoundtripTimeResponse) {
+			handleResponse(ctx, e);
 		} else {
-			ctx.sendUpstream(e);
+			super.messageReceived(ctx, e);
 		}
 
+	}
+
+	private void handleResponse(final ChannelHandlerContext ctx, final MessageEvent e) {
+		RoundtripTimeMessages.RoundtripTimeResponse rttResponse =
+				(RoundtripTimeMessages.RoundtripTimeResponse) e.getMessage();
+
+		log.debug("Received RoundTripTimeResponse {}", rttResponse);
+
+		long now = System.currentTimeMillis();
+		long diff = now - rttResponse.getRequestUnixEpochInMillis();
+
+		log.debug("Link metric is : {}", diff);
+
+		// ignore faulty input message
+		if (diff > 0) {
+			ctx.sendUpstream(new UpstreamMessageEvent(
+					ctx.getChannel(),
+					new LinkMetric(diff),
+					ctx.getChannel().getRemoteAddress()
+			)
+			);
+		}
+	}
+
+	private void handleRequest(final ChannelHandlerContext ctx, final MessageEvent e) {
+
+		// "read" request
+		RoundtripTimeMessages.RoundtripTimeRequest request =
+				(RoundtripTimeMessages.RoundtripTimeRequest) e.getMessage();
+
+		// build response
+		RoundtripTimeMessages.RoundtripTimeResponse response = RoundtripTimeMessages.RoundtripTimeResponse
+				.newBuilder()
+				.setRequestUnixEpochInMillis(request.getUnixEpochInMillis())
+				.build();
+
+		// send response
+		channel.write(response);
 	}
 }
