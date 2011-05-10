@@ -30,7 +30,7 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 
 	private Channel channel;
 
-	private ScheduledFuture<?> disseminationRunnableSchedule;
+	private ScheduledFuture<?> routeDisseminationRunnableSchedule;
 
 	/**
 	 * Name of the remote node that we're connected to. This is being learnt by the first PVP message that we receive
@@ -91,7 +91,7 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 		assert channel != null;
 
 		channel = null;
-		disseminationRunnableSchedule.cancel(false);
+		routeDisseminationRunnableSchedule.cancel(false);
 
 		if (remoteNode != null) {
 			routingTable.removeRoutesOverNextHop(remoteNode);
@@ -107,24 +107,24 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 		assert channel == null;
 
 		channel = e.getChannel();
-		rescheduleDisseminationRunnable(0);
+		rescheduleRouteDisseminationRunnable(0);
 
 		super.channelConnected(ctx, e);
 	}
 
-	private void rescheduleDisseminationRunnable(long initialDelay) {
+	private void rescheduleRouteDisseminationRunnable(long initialDelay) {
 
-		log.debug("Rescheduling dissemination runnable for initial delay in {} {}.", initialDelay,
+		log.debug("Rescheduling route dissemination runnable for initial delay in {} {}.", initialDelay,
 				maxDisseminationIntervalTimeUnit
 		);
 
-		if (disseminationRunnableSchedule != null) {
-			if (!disseminationRunnableSchedule.isCancelled()) {
-				disseminationRunnableSchedule.cancel(false);
+		if (routeDisseminationRunnableSchedule != null) {
+			if (!routeDisseminationRunnableSchedule.isCancelled()) {
+				routeDisseminationRunnableSchedule.cancel(false);
 			}
 		}
 
-		disseminationRunnableSchedule = executorService.scheduleWithFixedDelay(
+		routeDisseminationRunnableSchedule = executorService.scheduleWithFixedDelay(
 				disseminationRunnable,
 				initialDelay,
 				maxDisseminationInterval,
@@ -184,7 +184,7 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 		}
 
 		if (sthChanged) {
-			rescheduleDisseminationRunnable(0);
+			rescheduleRouteDisseminationRunnable(0);
 		}
 	}
 
