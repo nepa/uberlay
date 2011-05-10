@@ -1,6 +1,7 @@
 package de.uniluebeck.itm.uberlay.core.protocols.pvp;
 
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import de.uniluebeck.itm.uberlay.core.LinkMetric;
 import org.jboss.netty.channel.*;
@@ -30,6 +31,12 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 	private Channel channel;
 
 	private ScheduledFuture<?> disseminationRunnableSchedule;
+
+	/**
+	 * Name of the remote node that we're connected to. This is being learnt by the first PVP message that we receive
+	 * over this channel.
+	 */
+	private String remoteNode;
 
 	private final Runnable disseminationRunnable = new Runnable() {
 		@Override
@@ -86,6 +93,11 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 		channel = null;
 		disseminationRunnableSchedule.cancel(false);
 
+		if (remoteNode != null) {
+			routingTable.removeRoutesOverNextHop(remoteNode);
+			executorService.execute(disseminationRunnable);
+		}
+
 		super.channelDisconnected(ctx, e);
 	}
 
@@ -136,9 +148,11 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 
 	private void handlePathVectorUpdateMessage(final PathVectorMessages.PathVectorUpdate message) {
 
-		log.debug("Received PathVectorUpdateMessage: {}", message);
+		log.debug("handlePathVectorUpdateMessage()");
 
 		final String sender = message.getSender();
+		Preconditions.checkArgument(remoteNode == null || remoteNode.equals(sender));
+		remoteNode = sender;
 		boolean sthChanged = false;
 
 		List<PathVectorMessages.PathVectorUpdate.RoutingTableEntry> entries = message.getRoutingTableEntriesList();

@@ -1,6 +1,7 @@
 package de.uniluebeck.itm.uberlay.core.protocols.pvp;
 
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -10,7 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -145,6 +148,9 @@ public class PathVectorRoutingTable {
 				Entry entry = new Entry(cost, path);
 				log.trace("Updating routing table entry: {}", entry);
 				routingTable.put(destination, entry);
+				if (log.isDebugEnabled()) {
+					logRoutingTable();
+				}
 				return true;
 
 			} else {
@@ -167,6 +173,39 @@ public class PathVectorRoutingTable {
 			}
 			return false;
 		}
+	}
+
+	/**
+	 * Removes all routes from the table that have {@code remoteNode} as the next hop. This method may be called e.g.,
+	 * if the connection between this host and {@code remoteNode} was dropped and the route is thereby obsolete.
+	 *
+	 * @param remoteNode the next hop node that is now unavailable
+	 */
+	public void removeRoutesOverNextHop(final String remoteNode) {
+		for (Iterator<Map.Entry<String, Entry>> iterator = routingTable.entrySet().iterator(); iterator.hasNext();) {
+			Map.Entry<String, Entry> entry = iterator.next();
+			if (entry.getValue().getNextHop().equals(remoteNode)) {
+				iterator.remove();
+			}
+		}
+		if (log.isDebugEnabled()) {
+			log.debug("Removed routes over \"{}\" as that next hop is now unavailable.", remoteNode);
+			logRoutingTable();
+		}
+	}
+
+	private void logRoutingTable() {
+		StringBuilder b = new StringBuilder();
+		b.append("RoutingTable:\n");
+		for (Map.Entry<String, PathVectorRoutingTable.Entry> entry : getEntries().entrySet()) {
+			b.append(entry.getKey());
+			b.append(" => [");
+			b.append(entry.getValue().getCost());
+			b.append("] {");
+			b.append(Joiner.on(", ").join(entry.getValue().getPath()));
+			b.append("}\n");
+		}
+		log.debug(b.toString());
 	}
 
 }
