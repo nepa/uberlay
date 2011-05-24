@@ -30,6 +30,7 @@ message PathVectorUpdate {
 	message RoutingTableEntry {
 		required string destination = 1;
 		required int64 cost = 2;
+		repeated string path = 3;
 	}
 
 	required string sender = 1;

@@ -1,5 +1,6 @@
 package de.uniluebeck.itm.uberlay.core.protocols.pvp;
 
+import com.google.common.collect.Lists;
 import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.Channel;
@@ -8,6 +9,7 @@ import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 
 import java.net.InetSocketAddress;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -37,19 +39,23 @@ public class PathVectorPeer {
 
 		startServer(localHostName, localPort, executorService, pipelineFactory);
 
-		final boolean startClient = args.length > 4;
-		if (startClient) {
+		final List<Channel> clientChannels = Lists.newArrayList();
+		for (int i = 3; i < args.length; i = i + 2) {
 
-			final String remoteHostName = args[3];
-			final int remotePort = Integer.parseInt(args[4]);
+			if (args.length > i) {
 
-			startClient(remoteHostName, remotePort, executorService, pipelineFactory);
+				final String remoteHostName = args[i];
+				final int remotePort = Integer.parseInt(args[i+1]);
+
+				clientChannels.add(startClient(remoteHostName, remotePort, executorService, pipelineFactory));
+			}
 		}
 	}
 
 	private static Channel startClient(final String remoteHostName, final int remotePort,
 									   final ScheduledExecutorService executorService,
 									   final PathVectorChannelPipelineFactory pipelineFactory) {
+
 		final ChannelFactory clientChannelFactory = new NioClientSocketChannelFactory(
 				executorService,
 				executorService
