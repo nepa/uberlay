@@ -8,11 +8,29 @@ public final class PathVectorMessages {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
+  public interface PathVectorUpdateOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+    
+    // required string sender = 1;
+    boolean hasSender();
+    String getSender();
+    
+    // repeated .de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorUpdate.RoutingTableEntry routingTableEntries = 2;
+    java.util.List<de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry> 
+        getRoutingTableEntriesList();
+    de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry getRoutingTableEntries(int index);
+    int getRoutingTableEntriesCount();
+    java.util.List<? extends de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntryOrBuilder> 
+        getRoutingTableEntriesOrBuilderList();
+    de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntryOrBuilder getRoutingTableEntriesOrBuilder(
+        int index);
+  }
   public static final class PathVectorUpdate extends
-      com.google.protobuf.GeneratedMessage {
+      com.google.protobuf.GeneratedMessage
+      implements PathVectorUpdateOrBuilder {
     // Use PathVectorUpdate.newBuilder() to construct.
-    private PathVectorUpdate() {
-      initFields();
+    private PathVectorUpdate(Builder builder) {
+      super(builder);
     }
     private PathVectorUpdate(boolean noInit) {}
     
@@ -35,11 +53,23 @@ public final class PathVectorMessages {
       return de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.internal_static_de_uniluebeck_itm_uberlay_core_protocols_pvp_PathVectorUpdate_fieldAccessorTable;
     }
     
+    public interface RoutingTableEntryOrBuilder
+        extends com.google.protobuf.MessageOrBuilder {
+      
+      // required string destination = 1;
+      boolean hasDestination();
+      String getDestination();
+      
+      // required int64 cost = 2;
+      boolean hasCost();
+      long getCost();
+    }
     public static final class RoutingTableEntry extends
-        com.google.protobuf.GeneratedMessage {
+        com.google.protobuf.GeneratedMessage
+        implements RoutingTableEntryOrBuilder {
       // Use RoutingTableEntry.newBuilder() to construct.
-      private RoutingTableEntry() {
-        initFields();
+      private RoutingTableEntry(Builder builder) {
+        super(builder);
       }
       private RoutingTableEntry(boolean noInit) {}
       
@@ -62,51 +92,78 @@ public final class PathVectorMessages {
         return de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.internal_static_de_uniluebeck_itm_uberlay_core_protocols_pvp_PathVectorUpdate_RoutingTableEntry_fieldAccessorTable;
       }
       
+      private int bitField0_;
       // required string destination = 1;
       public static final int DESTINATION_FIELD_NUMBER = 1;
-      private boolean hasDestination;
-      private java.lang.String destination_ = "";
-      public boolean hasDestination() { return hasDestination; }
-      public java.lang.String getDestination() { return destination_; }
+      private java.lang.Object destination_;
+      public boolean hasDestination() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public String getDestination() {
+        java.lang.Object ref = destination_;
+        if (ref instanceof String) {
+          return (String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          String s = bs.toStringUtf8();
+          if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+            destination_ = s;
+          }
+          return s;
+        }
+      }
+      private com.google.protobuf.ByteString getDestinationBytes() {
+        java.lang.Object ref = destination_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+          destination_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
       
       // required int64 cost = 2;
       public static final int COST_FIELD_NUMBER = 2;
-      private boolean hasCost;
-      private long cost_ = 0L;
-      public boolean hasCost() { return hasCost; }
-      public long getCost() { return cost_; }
-      
-      // repeated string path = 3;
-      public static final int PATH_FIELD_NUMBER = 3;
-      private java.util.List<java.lang.String> path_ =
-        java.util.Collections.emptyList();
-      public java.util.List<java.lang.String> getPathList() {
-        return path_;
+      private long cost_;
+      public boolean hasCost() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
       }
-      public int getPathCount() { return path_.size(); }
-      public java.lang.String getPath(int index) {
-        return path_.get(index);
+      public long getCost() {
+        return cost_;
       }
       
       private void initFields() {
+        destination_ = "";
+        cost_ = 0L;
       }
+      private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
-        if (!hasDestination) return false;
-        if (!hasCost) return false;
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized != -1) return isInitialized == 1;
+        
+        if (!hasDestination()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+        if (!hasCost()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+        memoizedIsInitialized = 1;
         return true;
       }
       
       public void writeTo(com.google.protobuf.CodedOutputStream output)
                           throws java.io.IOException {
         getSerializedSize();
-        if (hasDestination()) {
-          output.writeString(1, getDestination());
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          output.writeBytes(1, getDestinationBytes());
         }
-        if (hasCost()) {
-          output.writeInt64(2, getCost());
-        }
-        for (java.lang.String element : getPathList()) {
-          output.writeString(3, element);
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          output.writeInt64(2, cost_);
         }
         getUnknownFields().writeTo(output);
       }
@@ -117,26 +174,24 @@ public final class PathVectorMessages {
         if (size != -1) return size;
       
         size = 0;
-        if (hasDestination()) {
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeStringSize(1, getDestination());
+            .computeBytesSize(1, getDestinationBytes());
         }
-        if (hasCost()) {
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt64Size(2, getCost());
-        }
-        {
-          int dataSize = 0;
-          for (java.lang.String element : getPathList()) {
-            dataSize += com.google.protobuf.CodedOutputStream
-              .computeStringSizeNoTag(element);
-          }
-          size += dataSize;
-          size += 1 * getPathList().size();
+            .computeInt64Size(2, cost_);
         }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
         return size;
+      }
+      
+      private static final long serialVersionUID = 0L;
+      @java.lang.Override
+      protected java.lang.Object writeReplace()
+          throws java.io.ObjectStreamException {
+        return super.writeReplace();
       }
       
       public static de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry parseFrom(
@@ -213,34 +268,53 @@ public final class PathVectorMessages {
       }
       public Builder toBuilder() { return newBuilder(this); }
       
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
       public static final class Builder extends
-          com.google.protobuf.GeneratedMessage.Builder<Builder> {
-        private de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry result;
-        
-        // Construct using de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.newBuilder()
-        private Builder() {}
-        
-        private static Builder create() {
-          Builder builder = new Builder();
-          builder.result = new de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry();
-          return builder;
+          com.google.protobuf.GeneratedMessage.Builder<Builder>
+         implements de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntryOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.internal_static_de_uniluebeck_itm_uberlay_core_protocols_pvp_PathVectorUpdate_RoutingTableEntry_descriptor;
         }
         
-        protected de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry internalGetResult() {
-          return result;
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.internal_static_de_uniluebeck_itm_uberlay_core_protocols_pvp_PathVectorUpdate_RoutingTableEntry_fieldAccessorTable;
+        }
+        
+        // Construct using de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+        
+        private Builder(BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          }
+        }
+        private static Builder create() {
+          return new Builder();
         }
         
         public Builder clear() {
-          if (result == null) {
-            throw new IllegalStateException(
-              "Cannot call clear() after build().");
-          }
-          result = new de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry();
+          super.clear();
+          destination_ = "";
+          bitField0_ = (bitField0_ & ~0x00000001);
+          cost_ = 0L;
+          bitField0_ = (bitField0_ & ~0x00000002);
           return this;
         }
         
         public Builder clone() {
-          return create().mergeFrom(result);
+          return create().mergeFrom(buildPartial());
         }
         
         public com.google.protobuf.Descriptors.Descriptor
@@ -252,37 +326,39 @@ public final class PathVectorMessages {
           return de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.getDefaultInstance();
         }
         
-        public boolean isInitialized() {
-          return result.isInitialized();
-        }
         public de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry build() {
-          if (result != null && !isInitialized()) {
+          de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry result = buildPartial();
+          if (!result.isInitialized()) {
             throw newUninitializedMessageException(result);
           }
-          return buildPartial();
+          return result;
         }
         
         private de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry buildParsed()
             throws com.google.protobuf.InvalidProtocolBufferException {
-          if (!isInitialized()) {
+          de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry result = buildPartial();
+          if (!result.isInitialized()) {
             throw newUninitializedMessageException(
               result).asInvalidProtocolBufferException();
           }
-          return buildPartial();
+          return result;
         }
         
         public de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry buildPartial() {
-          if (result == null) {
-            throw new IllegalStateException(
-              "build() has already been called on this Builder.");
+          de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry result = new de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry(this);
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+            to_bitField0_ |= 0x00000001;
           }
-          if (result.path_ != java.util.Collections.EMPTY_LIST) {
-            result.path_ =
-              java.util.Collections.unmodifiableList(result.path_);
+          result.destination_ = destination_;
+          if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+            to_bitField0_ |= 0x00000002;
           }
-          de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry returnMe = result;
-          result = null;
-          return returnMe;
+          result.cost_ = cost_;
+          result.bitField0_ = to_bitField0_;
+          onBuilt();
+          return result;
         }
         
         public Builder mergeFrom(com.google.protobuf.Message other) {
@@ -302,14 +378,20 @@ public final class PathVectorMessages {
           if (other.hasCost()) {
             setCost(other.getCost());
           }
-          if (!other.path_.isEmpty()) {
-            if (result.path_.isEmpty()) {
-              result.path_ = new java.util.ArrayList<java.lang.String>();
-            }
-            result.path_.addAll(other.path_);
-          }
           this.mergeUnknownFields(other.getUnknownFields());
           return this;
+        }
+        
+        public final boolean isInitialized() {
+          if (!hasDestination()) {
+            
+            return false;
+          }
+          if (!hasCost()) {
+            
+            return false;
+          }
+          return true;
         }
         
         public Builder mergeFrom(
@@ -324,108 +406,87 @@ public final class PathVectorMessages {
             switch (tag) {
               case 0:
                 this.setUnknownFields(unknownFields.build());
+                onChanged();
                 return this;
               default: {
                 if (!parseUnknownField(input, unknownFields,
                                        extensionRegistry, tag)) {
                   this.setUnknownFields(unknownFields.build());
+                  onChanged();
                   return this;
                 }
                 break;
               }
               case 10: {
-                setDestination(input.readString());
+                bitField0_ |= 0x00000001;
+                destination_ = input.readBytes();
                 break;
               }
               case 16: {
-                setCost(input.readInt64());
-                break;
-              }
-              case 26: {
-                addPath(input.readString());
+                bitField0_ |= 0x00000002;
+                cost_ = input.readInt64();
                 break;
               }
             }
           }
         }
         
+        private int bitField0_;
         
         // required string destination = 1;
+        private java.lang.Object destination_ = "";
         public boolean hasDestination() {
-          return result.hasDestination();
+          return ((bitField0_ & 0x00000001) == 0x00000001);
         }
-        public java.lang.String getDestination() {
-          return result.getDestination();
+        public String getDestination() {
+          java.lang.Object ref = destination_;
+          if (!(ref instanceof String)) {
+            String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+            destination_ = s;
+            return s;
+          } else {
+            return (String) ref;
+          }
         }
-        public Builder setDestination(java.lang.String value) {
+        public Builder setDestination(String value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  result.hasDestination = true;
-          result.destination_ = value;
+  bitField0_ |= 0x00000001;
+          destination_ = value;
+          onChanged();
           return this;
         }
         public Builder clearDestination() {
-          result.hasDestination = false;
-          result.destination_ = getDefaultInstance().getDestination();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          destination_ = getDefaultInstance().getDestination();
+          onChanged();
           return this;
+        }
+        void setDestination(com.google.protobuf.ByteString value) {
+          bitField0_ |= 0x00000001;
+          destination_ = value;
+          onChanged();
         }
         
         // required int64 cost = 2;
+        private long cost_ ;
         public boolean hasCost() {
-          return result.hasCost();
+          return ((bitField0_ & 0x00000002) == 0x00000002);
         }
         public long getCost() {
-          return result.getCost();
+          return cost_;
         }
         public Builder setCost(long value) {
-          result.hasCost = true;
-          result.cost_ = value;
+          bitField0_ |= 0x00000002;
+          cost_ = value;
+          onChanged();
           return this;
         }
         public Builder clearCost() {
-          result.hasCost = false;
-          result.cost_ = 0L;
-          return this;
-        }
-        
-        // repeated string path = 3;
-        public java.util.List<java.lang.String> getPathList() {
-          return java.util.Collections.unmodifiableList(result.path_);
-        }
-        public int getPathCount() {
-          return result.getPathCount();
-        }
-        public java.lang.String getPath(int index) {
-          return result.getPath(index);
-        }
-        public Builder setPath(int index, java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  result.path_.set(index, value);
-          return this;
-        }
-        public Builder addPath(java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  if (result.path_.isEmpty()) {
-            result.path_ = new java.util.ArrayList<java.lang.String>();
-          }
-          result.path_.add(value);
-          return this;
-        }
-        public Builder addAllPath(
-            java.lang.Iterable<? extends java.lang.String> values) {
-          if (result.path_.isEmpty()) {
-            result.path_ = new java.util.ArrayList<java.lang.String>();
-          }
-          super.addAll(values, result.path_);
-          return this;
-        }
-        public Builder clearPath() {
-          result.path_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          cost_ = 0L;
+          onChanged();
           return this;
         }
         
@@ -434,50 +495,97 @@ public final class PathVectorMessages {
       
       static {
         defaultInstance = new RoutingTableEntry(true);
-        de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.internalForceInit();
         defaultInstance.initFields();
       }
       
       // @@protoc_insertion_point(class_scope:de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorUpdate.RoutingTableEntry)
     }
     
+    private int bitField0_;
     // required string sender = 1;
     public static final int SENDER_FIELD_NUMBER = 1;
-    private boolean hasSender;
-    private java.lang.String sender_ = "";
-    public boolean hasSender() { return hasSender; }
-    public java.lang.String getSender() { return sender_; }
+    private java.lang.Object sender_;
+    public boolean hasSender() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public String getSender() {
+      java.lang.Object ref = sender_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          sender_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getSenderBytes() {
+      java.lang.Object ref = sender_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        sender_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
     
     // repeated .de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorUpdate.RoutingTableEntry routingTableEntries = 2;
     public static final int ROUTINGTABLEENTRIES_FIELD_NUMBER = 2;
-    private java.util.List<de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry> routingTableEntries_ =
-      java.util.Collections.emptyList();
+    private java.util.List<de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry> routingTableEntries_;
     public java.util.List<de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry> getRoutingTableEntriesList() {
       return routingTableEntries_;
     }
-    public int getRoutingTableEntriesCount() { return routingTableEntries_.size(); }
+    public java.util.List<? extends de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntryOrBuilder> 
+        getRoutingTableEntriesOrBuilderList() {
+      return routingTableEntries_;
+    }
+    public int getRoutingTableEntriesCount() {
+      return routingTableEntries_.size();
+    }
     public de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry getRoutingTableEntries(int index) {
+      return routingTableEntries_.get(index);
+    }
+    public de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntryOrBuilder getRoutingTableEntriesOrBuilder(
+        int index) {
       return routingTableEntries_.get(index);
     }
     
     private void initFields() {
+      sender_ = "";
+      routingTableEntries_ = java.util.Collections.emptyList();
     }
+    private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
-      if (!hasSender) return false;
-      for (de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry element : getRoutingTableEntriesList()) {
-        if (!element.isInitialized()) return false;
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+      
+      if (!hasSender()) {
+        memoizedIsInitialized = 0;
+        return false;
       }
+      for (int i = 0; i < getRoutingTableEntriesCount(); i++) {
+        if (!getRoutingTableEntries(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
       return true;
     }
     
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
-      if (hasSender()) {
-        output.writeString(1, getSender());
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getSenderBytes());
       }
-      for (de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry element : getRoutingTableEntriesList()) {
-        output.writeMessage(2, element);
+      for (int i = 0; i < routingTableEntries_.size(); i++) {
+        output.writeMessage(2, routingTableEntries_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -488,17 +596,24 @@ public final class PathVectorMessages {
       if (size != -1) return size;
     
       size = 0;
-      if (hasSender()) {
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeStringSize(1, getSender());
+          .computeBytesSize(1, getSenderBytes());
       }
-      for (de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry element : getRoutingTableEntriesList()) {
+      for (int i = 0; i < routingTableEntries_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, element);
+          .computeMessageSize(2, routingTableEntries_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
       return size;
+    }
+    
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
     }
     
     public static de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate parseFrom(
@@ -575,34 +690,58 @@ public final class PathVectorMessages {
     }
     public Builder toBuilder() { return newBuilder(this); }
     
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> {
-      private de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate result;
-      
-      // Construct using de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.newBuilder()
-      private Builder() {}
-      
-      private static Builder create() {
-        Builder builder = new Builder();
-        builder.result = new de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate();
-        return builder;
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdateOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.internal_static_de_uniluebeck_itm_uberlay_core_protocols_pvp_PathVectorUpdate_descriptor;
       }
       
-      protected de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate internalGetResult() {
-        return result;
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.internal_static_de_uniluebeck_itm_uberlay_core_protocols_pvp_PathVectorUpdate_fieldAccessorTable;
+      }
+      
+      // Construct using de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+      
+      private Builder(BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getRoutingTableEntriesFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
       }
       
       public Builder clear() {
-        if (result == null) {
-          throw new IllegalStateException(
-            "Cannot call clear() after build().");
+        super.clear();
+        sender_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (routingTableEntriesBuilder_ == null) {
+          routingTableEntries_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          routingTableEntriesBuilder_.clear();
         }
-        result = new de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate();
         return this;
       }
       
       public Builder clone() {
-        return create().mergeFrom(result);
+        return create().mergeFrom(buildPartial());
       }
       
       public com.google.protobuf.Descriptors.Descriptor
@@ -614,37 +753,44 @@ public final class PathVectorMessages {
         return de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.getDefaultInstance();
       }
       
-      public boolean isInitialized() {
-        return result.isInitialized();
-      }
       public de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate build() {
-        if (result != null && !isInitialized()) {
+        de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate result = buildPartial();
+        if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
-        return buildPartial();
+        return result;
       }
       
       private de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate buildParsed()
           throws com.google.protobuf.InvalidProtocolBufferException {
-        if (!isInitialized()) {
+        de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate result = buildPartial();
+        if (!result.isInitialized()) {
           throw newUninitializedMessageException(
             result).asInvalidProtocolBufferException();
         }
-        return buildPartial();
+        return result;
       }
       
       public de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate buildPartial() {
-        if (result == null) {
-          throw new IllegalStateException(
-            "build() has already been called on this Builder.");
+        de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate result = new de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
         }
-        if (result.routingTableEntries_ != java.util.Collections.EMPTY_LIST) {
-          result.routingTableEntries_ =
-            java.util.Collections.unmodifiableList(result.routingTableEntries_);
+        result.sender_ = sender_;
+        if (routingTableEntriesBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            routingTableEntries_ = java.util.Collections.unmodifiableList(routingTableEntries_);
+            bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.routingTableEntries_ = routingTableEntries_;
+        } else {
+          result.routingTableEntries_ = routingTableEntriesBuilder_.build();
         }
-        de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate returnMe = result;
-        result = null;
-        return returnMe;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
       }
       
       public Builder mergeFrom(com.google.protobuf.Message other) {
@@ -661,14 +807,48 @@ public final class PathVectorMessages {
         if (other.hasSender()) {
           setSender(other.getSender());
         }
-        if (!other.routingTableEntries_.isEmpty()) {
-          if (result.routingTableEntries_.isEmpty()) {
-            result.routingTableEntries_ = new java.util.ArrayList<de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry>();
+        if (routingTableEntriesBuilder_ == null) {
+          if (!other.routingTableEntries_.isEmpty()) {
+            if (routingTableEntries_.isEmpty()) {
+              routingTableEntries_ = other.routingTableEntries_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensureRoutingTableEntriesIsMutable();
+              routingTableEntries_.addAll(other.routingTableEntries_);
+            }
+            onChanged();
           }
-          result.routingTableEntries_.addAll(other.routingTableEntries_);
+        } else {
+          if (!other.routingTableEntries_.isEmpty()) {
+            if (routingTableEntriesBuilder_.isEmpty()) {
+              routingTableEntriesBuilder_.dispose();
+              routingTableEntriesBuilder_ = null;
+              routingTableEntries_ = other.routingTableEntries_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+              routingTableEntriesBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getRoutingTableEntriesFieldBuilder() : null;
+            } else {
+              routingTableEntriesBuilder_.addAllMessages(other.routingTableEntries_);
+            }
+          }
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
+      }
+      
+      public final boolean isInitialized() {
+        if (!hasSender()) {
+          
+          return false;
+        }
+        for (int i = 0; i < getRoutingTableEntriesCount(); i++) {
+          if (!getRoutingTableEntries(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
       }
       
       public Builder mergeFrom(
@@ -683,17 +863,20 @@ public final class PathVectorMessages {
           switch (tag) {
             case 0:
               this.setUnknownFields(unknownFields.build());
+              onChanged();
               return this;
             default: {
               if (!parseUnknownField(input, unknownFields,
                                      extensionRegistry, tag)) {
                 this.setUnknownFields(unknownFields.build());
+                onChanged();
                 return this;
               }
               break;
             }
             case 10: {
-              setSender(input.readString());
+              bitField0_ |= 0x00000001;
+              sender_ = input.readBytes();
               break;
             }
             case 18: {
@@ -706,77 +889,228 @@ public final class PathVectorMessages {
         }
       }
       
+      private int bitField0_;
       
       // required string sender = 1;
+      private java.lang.Object sender_ = "";
       public boolean hasSender() {
-        return result.hasSender();
+        return ((bitField0_ & 0x00000001) == 0x00000001);
       }
-      public java.lang.String getSender() {
-        return result.getSender();
+      public String getSender() {
+        java.lang.Object ref = sender_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          sender_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
       }
-      public Builder setSender(java.lang.String value) {
+      public Builder setSender(String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  result.hasSender = true;
-        result.sender_ = value;
+  bitField0_ |= 0x00000001;
+        sender_ = value;
+        onChanged();
         return this;
       }
       public Builder clearSender() {
-        result.hasSender = false;
-        result.sender_ = getDefaultInstance().getSender();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        sender_ = getDefaultInstance().getSender();
+        onChanged();
         return this;
+      }
+      void setSender(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000001;
+        sender_ = value;
+        onChanged();
       }
       
       // repeated .de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorUpdate.RoutingTableEntry routingTableEntries = 2;
+      private java.util.List<de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry> routingTableEntries_ =
+        java.util.Collections.emptyList();
+      private void ensureRoutingTableEntriesIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          routingTableEntries_ = new java.util.ArrayList<de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry>(routingTableEntries_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+      
+      private com.google.protobuf.RepeatedFieldBuilder<
+          de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry, de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder, de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntryOrBuilder> routingTableEntriesBuilder_;
+      
       public java.util.List<de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry> getRoutingTableEntriesList() {
-        return java.util.Collections.unmodifiableList(result.routingTableEntries_);
+        if (routingTableEntriesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(routingTableEntries_);
+        } else {
+          return routingTableEntriesBuilder_.getMessageList();
+        }
       }
       public int getRoutingTableEntriesCount() {
-        return result.getRoutingTableEntriesCount();
+        if (routingTableEntriesBuilder_ == null) {
+          return routingTableEntries_.size();
+        } else {
+          return routingTableEntriesBuilder_.getCount();
+        }
       }
       public de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry getRoutingTableEntries(int index) {
-        return result.getRoutingTableEntries(index);
-      }
-      public Builder setRoutingTableEntries(int index, de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry value) {
-        if (value == null) {
-          throw new NullPointerException();
+        if (routingTableEntriesBuilder_ == null) {
+          return routingTableEntries_.get(index);
+        } else {
+          return routingTableEntriesBuilder_.getMessage(index);
         }
-        result.routingTableEntries_.set(index, value);
+      }
+      public Builder setRoutingTableEntries(
+          int index, de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry value) {
+        if (routingTableEntriesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureRoutingTableEntriesIsMutable();
+          routingTableEntries_.set(index, value);
+          onChanged();
+        } else {
+          routingTableEntriesBuilder_.setMessage(index, value);
+        }
         return this;
       }
-      public Builder setRoutingTableEntries(int index, de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder builderForValue) {
-        result.routingTableEntries_.set(index, builderForValue.build());
+      public Builder setRoutingTableEntries(
+          int index, de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder builderForValue) {
+        if (routingTableEntriesBuilder_ == null) {
+          ensureRoutingTableEntriesIsMutable();
+          routingTableEntries_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          routingTableEntriesBuilder_.setMessage(index, builderForValue.build());
+        }
         return this;
       }
       public Builder addRoutingTableEntries(de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry value) {
-        if (value == null) {
-          throw new NullPointerException();
+        if (routingTableEntriesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureRoutingTableEntriesIsMutable();
+          routingTableEntries_.add(value);
+          onChanged();
+        } else {
+          routingTableEntriesBuilder_.addMessage(value);
         }
-        if (result.routingTableEntries_.isEmpty()) {
-          result.routingTableEntries_ = new java.util.ArrayList<de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry>();
-        }
-        result.routingTableEntries_.add(value);
         return this;
       }
-      public Builder addRoutingTableEntries(de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder builderForValue) {
-        if (result.routingTableEntries_.isEmpty()) {
-          result.routingTableEntries_ = new java.util.ArrayList<de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry>();
+      public Builder addRoutingTableEntries(
+          int index, de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry value) {
+        if (routingTableEntriesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureRoutingTableEntriesIsMutable();
+          routingTableEntries_.add(index, value);
+          onChanged();
+        } else {
+          routingTableEntriesBuilder_.addMessage(index, value);
         }
-        result.routingTableEntries_.add(builderForValue.build());
+        return this;
+      }
+      public Builder addRoutingTableEntries(
+          de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder builderForValue) {
+        if (routingTableEntriesBuilder_ == null) {
+          ensureRoutingTableEntriesIsMutable();
+          routingTableEntries_.add(builderForValue.build());
+          onChanged();
+        } else {
+          routingTableEntriesBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      public Builder addRoutingTableEntries(
+          int index, de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder builderForValue) {
+        if (routingTableEntriesBuilder_ == null) {
+          ensureRoutingTableEntriesIsMutable();
+          routingTableEntries_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          routingTableEntriesBuilder_.addMessage(index, builderForValue.build());
+        }
         return this;
       }
       public Builder addAllRoutingTableEntries(
           java.lang.Iterable<? extends de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry> values) {
-        if (result.routingTableEntries_.isEmpty()) {
-          result.routingTableEntries_ = new java.util.ArrayList<de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry>();
+        if (routingTableEntriesBuilder_ == null) {
+          ensureRoutingTableEntriesIsMutable();
+          super.addAll(values, routingTableEntries_);
+          onChanged();
+        } else {
+          routingTableEntriesBuilder_.addAllMessages(values);
         }
-        super.addAll(values, result.routingTableEntries_);
         return this;
       }
       public Builder clearRoutingTableEntries() {
-        result.routingTableEntries_ = java.util.Collections.emptyList();
+        if (routingTableEntriesBuilder_ == null) {
+          routingTableEntries_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          onChanged();
+        } else {
+          routingTableEntriesBuilder_.clear();
+        }
         return this;
+      }
+      public Builder removeRoutingTableEntries(int index) {
+        if (routingTableEntriesBuilder_ == null) {
+          ensureRoutingTableEntriesIsMutable();
+          routingTableEntries_.remove(index);
+          onChanged();
+        } else {
+          routingTableEntriesBuilder_.remove(index);
+        }
+        return this;
+      }
+      public de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder getRoutingTableEntriesBuilder(
+          int index) {
+        return getRoutingTableEntriesFieldBuilder().getBuilder(index);
+      }
+      public de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntryOrBuilder getRoutingTableEntriesOrBuilder(
+          int index) {
+        if (routingTableEntriesBuilder_ == null) {
+          return routingTableEntries_.get(index);  } else {
+          return routingTableEntriesBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      public java.util.List<? extends de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntryOrBuilder> 
+           getRoutingTableEntriesOrBuilderList() {
+        if (routingTableEntriesBuilder_ != null) {
+          return routingTableEntriesBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(routingTableEntries_);
+        }
+      }
+      public de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder addRoutingTableEntriesBuilder() {
+        return getRoutingTableEntriesFieldBuilder().addBuilder(
+            de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.getDefaultInstance());
+      }
+      public de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder addRoutingTableEntriesBuilder(
+          int index) {
+        return getRoutingTableEntriesFieldBuilder().addBuilder(
+            index, de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.getDefaultInstance());
+      }
+      public java.util.List<de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder> 
+           getRoutingTableEntriesBuilderList() {
+        return getRoutingTableEntriesFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry, de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder, de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntryOrBuilder> 
+          getRoutingTableEntriesFieldBuilder() {
+        if (routingTableEntriesBuilder_ == null) {
+          routingTableEntriesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry, de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder, de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntryOrBuilder>(
+                  routingTableEntries_,
+                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  getParentForChildren(),
+                  isClean());
+          routingTableEntries_ = null;
+        }
+        return routingTableEntriesBuilder_;
       }
       
       // @@protoc_insertion_point(builder_scope:de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorUpdate)
@@ -784,7 +1118,6 @@ public final class PathVectorMessages {
     
     static {
       defaultInstance = new PathVectorUpdate(true);
-      de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.internalForceInit();
       defaultInstance.initFields();
     }
     
@@ -812,12 +1145,12 @@ public final class PathVectorMessages {
     java.lang.String[] descriptorData = {
       "\n-src/main/resources/path_vector_message" +
       "s.proto\022,de.uniluebeck.itm.uberlay.core." +
-      "protocols.pvp\"\327\001\n\020PathVectorUpdate\022\016\n\006se" +
+      "protocols.pvp\"\311\001\n\020PathVectorUpdate\022\016\n\006se" +
       "nder\030\001 \002(\t\022m\n\023routingTableEntries\030\002 \003(\0132" +
       "P.de.uniluebeck.itm.uberlay.core.protoco" +
       "ls.pvp.PathVectorUpdate.RoutingTableEntr" +
-      "y\032D\n\021RoutingTableEntry\022\023\n\013destination\030\001 " +
-      "\002(\t\022\014\n\004cost\030\002 \002(\003\022\014\n\004path\030\003 \003(\tB\002H\001"
+      "y\0326\n\021RoutingTableEntry\022\023\n\013destination\030\001 " +
+      "\002(\t\022\014\n\004cost\030\002 \002(\003B\002H\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -837,7 +1170,7 @@ public final class PathVectorMessages {
           internal_static_de_uniluebeck_itm_uberlay_core_protocols_pvp_PathVectorUpdate_RoutingTableEntry_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_de_uniluebeck_itm_uberlay_core_protocols_pvp_PathVectorUpdate_RoutingTableEntry_descriptor,
-              new java.lang.String[] { "Destination", "Cost", "Path", },
+              new java.lang.String[] { "Destination", "Cost", },
               de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.class,
               de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder.class);
           return null;
@@ -848,8 +1181,6 @@ public final class PathVectorMessages {
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
   }
-  
-  public static void internalForceInit() {}
   
   // @@protoc_insertion_point(outer_class_scope)
 }

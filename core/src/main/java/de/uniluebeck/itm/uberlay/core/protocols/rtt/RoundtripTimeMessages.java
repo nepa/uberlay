@@ -8,11 +8,19 @@ public final class RoundtripTimeMessages {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
+  public interface RoundtripTimeRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+    
+    // required uint64 unix_epoch_in_millis = 1;
+    boolean hasUnixEpochInMillis();
+    long getUnixEpochInMillis();
+  }
   public static final class RoundtripTimeRequest extends
-      com.google.protobuf.GeneratedMessage {
+      com.google.protobuf.GeneratedMessage
+      implements RoundtripTimeRequestOrBuilder {
     // Use RoundtripTimeRequest.newBuilder() to construct.
-    private RoundtripTimeRequest() {
-      initFields();
+    private RoundtripTimeRequest(Builder builder) {
+      super(builder);
     }
     private RoundtripTimeRequest(boolean noInit) {}
     
@@ -35,25 +43,38 @@ public final class RoundtripTimeMessages {
       return de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.internal_static_de_uniluebeck_itm_uberlay_core_protocols_rtt_RoundtripTimeRequest_fieldAccessorTable;
     }
     
+    private int bitField0_;
     // required uint64 unix_epoch_in_millis = 1;
     public static final int UNIX_EPOCH_IN_MILLIS_FIELD_NUMBER = 1;
-    private boolean hasUnixEpochInMillis;
-    private long unixEpochInMillis_ = 0L;
-    public boolean hasUnixEpochInMillis() { return hasUnixEpochInMillis; }
-    public long getUnixEpochInMillis() { return unixEpochInMillis_; }
+    private long unixEpochInMillis_;
+    public boolean hasUnixEpochInMillis() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public long getUnixEpochInMillis() {
+      return unixEpochInMillis_;
+    }
     
     private void initFields() {
+      unixEpochInMillis_ = 0L;
     }
+    private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
-      if (!hasUnixEpochInMillis) return false;
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+      
+      if (!hasUnixEpochInMillis()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
       return true;
     }
     
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
-      if (hasUnixEpochInMillis()) {
-        output.writeUInt64(1, getUnixEpochInMillis());
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, unixEpochInMillis_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -64,13 +85,20 @@ public final class RoundtripTimeMessages {
       if (size != -1) return size;
     
       size = 0;
-      if (hasUnixEpochInMillis()) {
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(1, getUnixEpochInMillis());
+          .computeUInt64Size(1, unixEpochInMillis_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
       return size;
+    }
+    
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
     }
     
     public static de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeRequest parseFrom(
@@ -147,34 +175,51 @@ public final class RoundtripTimeMessages {
     }
     public Builder toBuilder() { return newBuilder(this); }
     
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> {
-      private de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeRequest result;
-      
-      // Construct using de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeRequest.newBuilder()
-      private Builder() {}
-      
-      private static Builder create() {
-        Builder builder = new Builder();
-        builder.result = new de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeRequest();
-        return builder;
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.internal_static_de_uniluebeck_itm_uberlay_core_protocols_rtt_RoundtripTimeRequest_descriptor;
       }
       
-      protected de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeRequest internalGetResult() {
-        return result;
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.internal_static_de_uniluebeck_itm_uberlay_core_protocols_rtt_RoundtripTimeRequest_fieldAccessorTable;
+      }
+      
+      // Construct using de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+      
+      private Builder(BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
       }
       
       public Builder clear() {
-        if (result == null) {
-          throw new IllegalStateException(
-            "Cannot call clear() after build().");
-        }
-        result = new de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeRequest();
+        super.clear();
+        unixEpochInMillis_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
       
       public Builder clone() {
-        return create().mergeFrom(result);
+        return create().mergeFrom(buildPartial());
       }
       
       public com.google.protobuf.Descriptors.Descriptor
@@ -186,33 +231,35 @@ public final class RoundtripTimeMessages {
         return de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeRequest.getDefaultInstance();
       }
       
-      public boolean isInitialized() {
-        return result.isInitialized();
-      }
       public de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeRequest build() {
-        if (result != null && !isInitialized()) {
+        de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeRequest result = buildPartial();
+        if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
-        return buildPartial();
+        return result;
       }
       
       private de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeRequest buildParsed()
           throws com.google.protobuf.InvalidProtocolBufferException {
-        if (!isInitialized()) {
+        de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeRequest result = buildPartial();
+        if (!result.isInitialized()) {
           throw newUninitializedMessageException(
             result).asInvalidProtocolBufferException();
         }
-        return buildPartial();
+        return result;
       }
       
       public de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeRequest buildPartial() {
-        if (result == null) {
-          throw new IllegalStateException(
-            "build() has already been called on this Builder.");
+        de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeRequest result = new de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeRequest(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
         }
-        de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeRequest returnMe = result;
-        result = null;
-        return returnMe;
+        result.unixEpochInMillis_ = unixEpochInMillis_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
       }
       
       public Builder mergeFrom(com.google.protobuf.Message other) {
@@ -233,6 +280,14 @@ public final class RoundtripTimeMessages {
         return this;
       }
       
+      public final boolean isInitialized() {
+        if (!hasUnixEpochInMillis()) {
+          
+          return false;
+        }
+        return true;
+      }
+      
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -245,39 +300,46 @@ public final class RoundtripTimeMessages {
           switch (tag) {
             case 0:
               this.setUnknownFields(unknownFields.build());
+              onChanged();
               return this;
             default: {
               if (!parseUnknownField(input, unknownFields,
                                      extensionRegistry, tag)) {
                 this.setUnknownFields(unknownFields.build());
+                onChanged();
                 return this;
               }
               break;
             }
             case 8: {
-              setUnixEpochInMillis(input.readUInt64());
+              bitField0_ |= 0x00000001;
+              unixEpochInMillis_ = input.readUInt64();
               break;
             }
           }
         }
       }
       
+      private int bitField0_;
       
       // required uint64 unix_epoch_in_millis = 1;
+      private long unixEpochInMillis_ ;
       public boolean hasUnixEpochInMillis() {
-        return result.hasUnixEpochInMillis();
+        return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       public long getUnixEpochInMillis() {
-        return result.getUnixEpochInMillis();
+        return unixEpochInMillis_;
       }
       public Builder setUnixEpochInMillis(long value) {
-        result.hasUnixEpochInMillis = true;
-        result.unixEpochInMillis_ = value;
+        bitField0_ |= 0x00000001;
+        unixEpochInMillis_ = value;
+        onChanged();
         return this;
       }
       public Builder clearUnixEpochInMillis() {
-        result.hasUnixEpochInMillis = false;
-        result.unixEpochInMillis_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        unixEpochInMillis_ = 0L;
+        onChanged();
         return this;
       }
       
@@ -286,18 +348,25 @@ public final class RoundtripTimeMessages {
     
     static {
       defaultInstance = new RoundtripTimeRequest(true);
-      de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.internalForceInit();
       defaultInstance.initFields();
     }
     
     // @@protoc_insertion_point(class_scope:de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeRequest)
   }
   
+  public interface RoundtripTimeResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+    
+    // required uint64 request_unix_epoch_in_millis = 1;
+    boolean hasRequestUnixEpochInMillis();
+    long getRequestUnixEpochInMillis();
+  }
   public static final class RoundtripTimeResponse extends
-      com.google.protobuf.GeneratedMessage {
+      com.google.protobuf.GeneratedMessage
+      implements RoundtripTimeResponseOrBuilder {
     // Use RoundtripTimeResponse.newBuilder() to construct.
-    private RoundtripTimeResponse() {
-      initFields();
+    private RoundtripTimeResponse(Builder builder) {
+      super(builder);
     }
     private RoundtripTimeResponse(boolean noInit) {}
     
@@ -320,25 +389,38 @@ public final class RoundtripTimeMessages {
       return de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.internal_static_de_uniluebeck_itm_uberlay_core_protocols_rtt_RoundtripTimeResponse_fieldAccessorTable;
     }
     
+    private int bitField0_;
     // required uint64 request_unix_epoch_in_millis = 1;
     public static final int REQUEST_UNIX_EPOCH_IN_MILLIS_FIELD_NUMBER = 1;
-    private boolean hasRequestUnixEpochInMillis;
-    private long requestUnixEpochInMillis_ = 0L;
-    public boolean hasRequestUnixEpochInMillis() { return hasRequestUnixEpochInMillis; }
-    public long getRequestUnixEpochInMillis() { return requestUnixEpochInMillis_; }
+    private long requestUnixEpochInMillis_;
+    public boolean hasRequestUnixEpochInMillis() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public long getRequestUnixEpochInMillis() {
+      return requestUnixEpochInMillis_;
+    }
     
     private void initFields() {
+      requestUnixEpochInMillis_ = 0L;
     }
+    private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
-      if (!hasRequestUnixEpochInMillis) return false;
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+      
+      if (!hasRequestUnixEpochInMillis()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
       return true;
     }
     
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
-      if (hasRequestUnixEpochInMillis()) {
-        output.writeUInt64(1, getRequestUnixEpochInMillis());
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt64(1, requestUnixEpochInMillis_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -349,13 +431,20 @@ public final class RoundtripTimeMessages {
       if (size != -1) return size;
     
       size = 0;
-      if (hasRequestUnixEpochInMillis()) {
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(1, getRequestUnixEpochInMillis());
+          .computeUInt64Size(1, requestUnixEpochInMillis_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
       return size;
+    }
+    
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
     }
     
     public static de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeResponse parseFrom(
@@ -432,34 +521,51 @@ public final class RoundtripTimeMessages {
     }
     public Builder toBuilder() { return newBuilder(this); }
     
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> {
-      private de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeResponse result;
-      
-      // Construct using de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeResponse.newBuilder()
-      private Builder() {}
-      
-      private static Builder create() {
-        Builder builder = new Builder();
-        builder.result = new de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeResponse();
-        return builder;
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.internal_static_de_uniluebeck_itm_uberlay_core_protocols_rtt_RoundtripTimeResponse_descriptor;
       }
       
-      protected de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeResponse internalGetResult() {
-        return result;
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.internal_static_de_uniluebeck_itm_uberlay_core_protocols_rtt_RoundtripTimeResponse_fieldAccessorTable;
+      }
+      
+      // Construct using de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+      
+      private Builder(BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
       }
       
       public Builder clear() {
-        if (result == null) {
-          throw new IllegalStateException(
-            "Cannot call clear() after build().");
-        }
-        result = new de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeResponse();
+        super.clear();
+        requestUnixEpochInMillis_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
       
       public Builder clone() {
-        return create().mergeFrom(result);
+        return create().mergeFrom(buildPartial());
       }
       
       public com.google.protobuf.Descriptors.Descriptor
@@ -471,33 +577,35 @@ public final class RoundtripTimeMessages {
         return de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeResponse.getDefaultInstance();
       }
       
-      public boolean isInitialized() {
-        return result.isInitialized();
-      }
       public de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeResponse build() {
-        if (result != null && !isInitialized()) {
+        de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeResponse result = buildPartial();
+        if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
-        return buildPartial();
+        return result;
       }
       
       private de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeResponse buildParsed()
           throws com.google.protobuf.InvalidProtocolBufferException {
-        if (!isInitialized()) {
+        de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeResponse result = buildPartial();
+        if (!result.isInitialized()) {
           throw newUninitializedMessageException(
             result).asInvalidProtocolBufferException();
         }
-        return buildPartial();
+        return result;
       }
       
       public de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeResponse buildPartial() {
-        if (result == null) {
-          throw new IllegalStateException(
-            "build() has already been called on this Builder.");
+        de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeResponse result = new de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
         }
-        de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.RoundtripTimeResponse returnMe = result;
-        result = null;
-        return returnMe;
+        result.requestUnixEpochInMillis_ = requestUnixEpochInMillis_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
       }
       
       public Builder mergeFrom(com.google.protobuf.Message other) {
@@ -518,6 +626,14 @@ public final class RoundtripTimeMessages {
         return this;
       }
       
+      public final boolean isInitialized() {
+        if (!hasRequestUnixEpochInMillis()) {
+          
+          return false;
+        }
+        return true;
+      }
+      
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -530,39 +646,46 @@ public final class RoundtripTimeMessages {
           switch (tag) {
             case 0:
               this.setUnknownFields(unknownFields.build());
+              onChanged();
               return this;
             default: {
               if (!parseUnknownField(input, unknownFields,
                                      extensionRegistry, tag)) {
                 this.setUnknownFields(unknownFields.build());
+                onChanged();
                 return this;
               }
               break;
             }
             case 8: {
-              setRequestUnixEpochInMillis(input.readUInt64());
+              bitField0_ |= 0x00000001;
+              requestUnixEpochInMillis_ = input.readUInt64();
               break;
             }
           }
         }
       }
       
+      private int bitField0_;
       
       // required uint64 request_unix_epoch_in_millis = 1;
+      private long requestUnixEpochInMillis_ ;
       public boolean hasRequestUnixEpochInMillis() {
-        return result.hasRequestUnixEpochInMillis();
+        return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       public long getRequestUnixEpochInMillis() {
-        return result.getRequestUnixEpochInMillis();
+        return requestUnixEpochInMillis_;
       }
       public Builder setRequestUnixEpochInMillis(long value) {
-        result.hasRequestUnixEpochInMillis = true;
-        result.requestUnixEpochInMillis_ = value;
+        bitField0_ |= 0x00000001;
+        requestUnixEpochInMillis_ = value;
+        onChanged();
         return this;
       }
       public Builder clearRequestUnixEpochInMillis() {
-        result.hasRequestUnixEpochInMillis = false;
-        result.requestUnixEpochInMillis_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        requestUnixEpochInMillis_ = 0L;
+        onChanged();
         return this;
       }
       
@@ -571,7 +694,6 @@ public final class RoundtripTimeMessages {
     
     static {
       defaultInstance = new RoundtripTimeResponse(true);
-      de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages.internalForceInit();
       defaultInstance.initFields();
     }
     
@@ -633,8 +755,6 @@ public final class RoundtripTimeMessages {
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
   }
-  
-  public static void internalForceInit() {}
   
   // @@protoc_insertion_point(outer_class_scope)
 }
