@@ -139,16 +139,16 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 			lastLinkMetric = (LinkMetric) e.getMessage();
 			super.messageReceived(ctx, e);
 		} else if (e.getMessage() instanceof PathVectorMessages.PathVectorUpdate) {
-			handlePathVectorUpdateMessage((PathVectorMessages.PathVectorUpdate) e.getMessage(), e.getChannel());
+			handlePathVectorUpdateMessage((PathVectorMessages.PathVectorUpdate) e.getMessage());
 		} else {
 			super.messageReceived(ctx, e);
 		}
 
 	}
 
-	private void handlePathVectorUpdateMessage(final PathVectorMessages.PathVectorUpdate message, final Channel channel) {
+	private void handlePathVectorUpdateMessage(final PathVectorMessages.PathVectorUpdate message) {
 
-		log.debug("handlePathVectorUpdateMessage({})", message);
+		log.debug("handlePathVectorUpdateMessage()");
 
 		final String sender = message.getSender();
 		Preconditions.checkArgument(remoteNode == null || remoteNode.equals(sender));
@@ -160,7 +160,7 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 
 		// refresh one-hop route to 'sender'
 		log.debug("Refreshing one-hop routing table entry to direct neighbor \"{}\"", sender);
-		routingTable.updateEntry(sender, linkCost, Lists.newArrayList(sender), channel);
+		routingTable.updateEntry(sender, linkCost, Lists.newArrayList(sender));
 
 		// check all routes received by 'sender' if they're shorter than our own routes and add them if so
 		for (PathVectorMessages.PathVectorUpdate.RoutingTableEntry routingTableEntryReceived : entries) {
@@ -179,7 +179,7 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 				// must add 'sender' as path does not contain 'sender' as the path received by him is his view
 				path.add(0, sender);
 
-				sthChanged = routingTable.updateEntry(destination, cost, path, channel) || sthChanged;
+				sthChanged = routingTable.updateEntry(destination, cost, path) || sthChanged;
 			}
 		}
 

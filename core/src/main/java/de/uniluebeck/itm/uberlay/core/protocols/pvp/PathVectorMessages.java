@@ -63,11 +63,6 @@ public final class PathVectorMessages {
       // required int64 cost = 2;
       boolean hasCost();
       long getCost();
-      
-      // repeated string path = 3;
-      java.util.List<String> getPathList();
-      int getPathCount();
-      String getPath(int index);
     }
     public static final class RoutingTableEntry extends
         com.google.protobuf.GeneratedMessage
@@ -140,24 +135,9 @@ public final class PathVectorMessages {
         return cost_;
       }
       
-      // repeated string path = 3;
-      public static final int PATH_FIELD_NUMBER = 3;
-      private com.google.protobuf.LazyStringList path_;
-      public java.util.List<String>
-          getPathList() {
-        return path_;
-      }
-      public int getPathCount() {
-        return path_.size();
-      }
-      public String getPath(int index) {
-        return path_.get(index);
-      }
-      
       private void initFields() {
         destination_ = "";
         cost_ = 0L;
-        path_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       }
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
@@ -185,9 +165,6 @@ public final class PathVectorMessages {
         if (((bitField0_ & 0x00000002) == 0x00000002)) {
           output.writeInt64(2, cost_);
         }
-        for (int i = 0; i < path_.size(); i++) {
-          output.writeBytes(3, path_.getByteString(i));
-        }
         getUnknownFields().writeTo(output);
       }
       
@@ -204,15 +181,6 @@ public final class PathVectorMessages {
         if (((bitField0_ & 0x00000002) == 0x00000002)) {
           size += com.google.protobuf.CodedOutputStream
             .computeInt64Size(2, cost_);
-        }
-        {
-          int dataSize = 0;
-          for (int i = 0; i < path_.size(); i++) {
-            dataSize += com.google.protobuf.CodedOutputStream
-              .computeBytesSizeNoTag(path_.getByteString(i));
-          }
-          size += dataSize;
-          size += 1 * getPathList().size();
         }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
@@ -342,8 +310,6 @@ public final class PathVectorMessages {
           bitField0_ = (bitField0_ & ~0x00000001);
           cost_ = 0L;
           bitField0_ = (bitField0_ & ~0x00000002);
-          path_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-          bitField0_ = (bitField0_ & ~0x00000004);
           return this;
         }
         
@@ -390,12 +356,6 @@ public final class PathVectorMessages {
             to_bitField0_ |= 0x00000002;
           }
           result.cost_ = cost_;
-          if (((bitField0_ & 0x00000004) == 0x00000004)) {
-            path_ = new com.google.protobuf.UnmodifiableLazyStringList(
-                path_);
-            bitField0_ = (bitField0_ & ~0x00000004);
-          }
-          result.path_ = path_;
           result.bitField0_ = to_bitField0_;
           onBuilt();
           return result;
@@ -417,16 +377,6 @@ public final class PathVectorMessages {
           }
           if (other.hasCost()) {
             setCost(other.getCost());
-          }
-          if (!other.path_.isEmpty()) {
-            if (path_.isEmpty()) {
-              path_ = other.path_;
-              bitField0_ = (bitField0_ & ~0x00000004);
-            } else {
-              ensurePathIsMutable();
-              path_.addAll(other.path_);
-            }
-            onChanged();
           }
           this.mergeUnknownFields(other.getUnknownFields());
           return this;
@@ -475,11 +425,6 @@ public final class PathVectorMessages {
               case 16: {
                 bitField0_ |= 0x00000002;
                 cost_ = input.readInt64();
-                break;
-              }
-              case 26: {
-                ensurePathIsMutable();
-                path_.add(input.readBytes());
                 break;
               }
             }
@@ -543,62 +488,6 @@ public final class PathVectorMessages {
           cost_ = 0L;
           onChanged();
           return this;
-        }
-        
-        // repeated string path = 3;
-        private com.google.protobuf.LazyStringList path_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        private void ensurePathIsMutable() {
-          if (!((bitField0_ & 0x00000004) == 0x00000004)) {
-            path_ = new com.google.protobuf.LazyStringArrayList(path_);
-            bitField0_ |= 0x00000004;
-           }
-        }
-        public java.util.List<String>
-            getPathList() {
-          return java.util.Collections.unmodifiableList(path_);
-        }
-        public int getPathCount() {
-          return path_.size();
-        }
-        public String getPath(int index) {
-          return path_.get(index);
-        }
-        public Builder setPath(
-            int index, String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  ensurePathIsMutable();
-          path_.set(index, value);
-          onChanged();
-          return this;
-        }
-        public Builder addPath(String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  ensurePathIsMutable();
-          path_.add(value);
-          onChanged();
-          return this;
-        }
-        public Builder addAllPath(
-            java.lang.Iterable<String> values) {
-          ensurePathIsMutable();
-          super.addAll(values, path_);
-          onChanged();
-          return this;
-        }
-        public Builder clearPath() {
-          path_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-          bitField0_ = (bitField0_ & ~0x00000004);
-          onChanged();
-          return this;
-        }
-        void addPath(com.google.protobuf.ByteString value) {
-          ensurePathIsMutable();
-          path_.add(value);
-          onChanged();
         }
         
         // @@protoc_insertion_point(builder_scope:de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorUpdate.RoutingTableEntry)
@@ -1256,12 +1145,12 @@ public final class PathVectorMessages {
     java.lang.String[] descriptorData = {
       "\n-src/main/resources/path_vector_message" +
       "s.proto\022,de.uniluebeck.itm.uberlay.core." +
-      "protocols.pvp\"\327\001\n\020PathVectorUpdate\022\016\n\006se" +
+      "protocols.pvp\"\311\001\n\020PathVectorUpdate\022\016\n\006se" +
       "nder\030\001 \002(\t\022m\n\023routingTableEntries\030\002 \003(\0132" +
       "P.de.uniluebeck.itm.uberlay.core.protoco" +
       "ls.pvp.PathVectorUpdate.RoutingTableEntr" +
-      "y\032D\n\021RoutingTableEntry\022\023\n\013destination\030\001 " +
-      "\002(\t\022\014\n\004cost\030\002 \002(\003\022\014\n\004path\030\003 \003(\tB\002H\001"
+      "y\0326\n\021RoutingTableEntry\022\023\n\013destination\030\001 " +
+      "\002(\t\022\014\n\004cost\030\002 \002(\003B\002H\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -1281,7 +1170,7 @@ public final class PathVectorMessages {
           internal_static_de_uniluebeck_itm_uberlay_core_protocols_pvp_PathVectorUpdate_RoutingTableEntry_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_de_uniluebeck_itm_uberlay_core_protocols_pvp_PathVectorUpdate_RoutingTableEntry_descriptor,
-              new java.lang.String[] { "Destination", "Cost", "Path", },
+              new java.lang.String[] { "Destination", "Cost", },
               de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.class,
               de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder.class);
           return null;
