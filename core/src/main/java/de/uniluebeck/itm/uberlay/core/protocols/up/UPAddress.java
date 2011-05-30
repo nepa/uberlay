@@ -1,6 +1,7 @@
 package de.uniluebeck.itm.uberlay.core.protocols.up;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 
 import java.net.SocketAddress;
 
@@ -18,19 +19,22 @@ public class UPAddress extends SocketAddress {
 	public static Function<UPAddress, String> ADDRESS_TO_STRING = new Function<UPAddress, String>() {
 		@Override
 		public String apply(final UPAddress input) {
-			return input.getAddress();
+			return input.address;
 		}
 	};
 
 	private String address;
 
+	public final Predicate<? super UPAddress> EQUALS = new Predicate<UPAddress>() {
+		@Override
+		public boolean apply(final UPAddress input) {
+			return address.equals(input.address);
+		}
+	};
+
 	public UPAddress(final String address) {
 		checkNotNull(address);
 		this.address = address;
-	}
-
-	public String getAddress() {
-		return address;
 	}
 
 	@Override
@@ -58,8 +62,6 @@ public class UPAddress extends SocketAddress {
 
 	@Override
 	public String toString() {
-		return "UPAddress{" +
-				"address='" + address + '\'' +
-				"}";
+		return address;
 	}
 }

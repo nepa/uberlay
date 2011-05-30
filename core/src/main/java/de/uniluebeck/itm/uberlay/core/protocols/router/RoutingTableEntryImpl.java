@@ -1,4 +1,4 @@
-package de.uniluebeck.itm.uberlay.core.protocols.pvp;
+package de.uniluebeck.itm.uberlay.core.protocols.router;
 
 import com.google.common.collect.Lists;
 import de.uniluebeck.itm.uberlay.core.protocols.up.UPAddress;

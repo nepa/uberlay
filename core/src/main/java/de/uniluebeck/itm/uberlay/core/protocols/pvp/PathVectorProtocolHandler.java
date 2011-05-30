@@ -4,6 +4,9 @@ package de.uniluebeck.itm.uberlay.core.protocols.pvp;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import de.uniluebeck.itm.uberlay.core.LinkMetric;
+import de.uniluebeck.itm.uberlay.core.protocols.router.RoutingTable;
+import de.uniluebeck.itm.uberlay.core.protocols.router.RoutingTableEntry;
+import de.uniluebeck.itm.uberlay.core.protocols.router.RoutingTableEntryImpl;
 import de.uniluebeck.itm.uberlay.core.protocols.up.UPAddress;
 import org.jboss.netty.channel.*;
 import org.slf4j.Logger;
@@ -181,12 +184,12 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 
 			final List<String> path = Lists.transform(
 					((RoutingTableEntryImpl) routingTableEntry).getPath(),
-			        UPAddress.ADDRESS_TO_STRING
+					UPAddress.ADDRESS_TO_STRING
 			);
 
 			final PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder entryBuilder =
 					PathVectorMessages.PathVectorUpdate.RoutingTableEntry.newBuilder()
-							.setDestination(destination.getAddress())
+							.setDestination(destination.toString())
 							.setCost(((RoutingTableEntryImpl) routingTableEntry).getCost())
 							.addAllPath(path);
 
