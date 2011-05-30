@@ -3,8 +3,7 @@ package de.uniluebeck.itm.uberlay.protocols.pvp;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import de.uniluebeck.itm.uberlay.LinkMetric;
-import de.uniluebeck.itm.uberlay.LinkMetric;
+import de.uniluebeck.itm.uberlay.protocols.rtt.RoundtripTimeMetric;
 import de.uniluebeck.itm.uberlay.router.RoutingTable;
 import de.uniluebeck.itm.uberlay.router.RoutingTableEntry;
 import de.uniluebeck.itm.uberlay.router.RoutingTableEntryImpl;
@@ -54,7 +53,7 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 		}
 	};
 
-	private LinkMetric lastLinkMetric;
+	private RoundtripTimeMetric lastLinkMetric;
 
 	public PathVectorProtocolHandler(final String nodeName, final RoutingTable routingTable,
 									 final ScheduledExecutorService executorService, final int maxDisseminationInterval,
@@ -97,8 +96,8 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 	@Override
 	public void messageReceived(final ChannelHandlerContext ctx, final MessageEvent e) throws Exception {
 
-		if (e.getMessage() instanceof LinkMetric) {
-			lastLinkMetric = (LinkMetric) e.getMessage();
+		if (e.getMessage() instanceof RoundtripTimeMetric) {
+			lastLinkMetric = (RoundtripTimeMetric) e.getMessage();
 			super.messageReceived(ctx, e);
 		} else if (e.getMessage() instanceof PathVectorMessages.PathVectorUpdate) {
 			handlePathVectorUpdateMessage((PathVectorMessages.PathVectorUpdate) e.getMessage());

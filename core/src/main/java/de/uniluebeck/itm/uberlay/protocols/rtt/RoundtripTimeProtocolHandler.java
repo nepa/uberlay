@@ -1,7 +1,6 @@
 package de.uniluebeck.itm.uberlay.protocols.rtt;
 
 
-import de.uniluebeck.itm.uberlay.LinkMetric;
 import org.jboss.netty.channel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,7 +101,7 @@ public class RoundtripTimeProtocolHandler extends SimpleChannelHandler {
 		if (diff > 0) {
 			ctx.sendUpstream(new UpstreamMessageEvent(
 					ctx.getChannel(),
-					new LinkMetric(diff),
+					new RoundtripTimeMetric(diff),
 					ctx.getChannel().getRemoteAddress()
 			)
 			);

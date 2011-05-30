@@ -1,11 +1,11 @@
-package de.uniluebeck.itm.uberlay;
+package de.uniluebeck.itm.uberlay.protocols.rtt;
 
 
-public class LinkMetric {
+public class RoundtripTimeMetric {
 
 	private final long metric;
 
-	public LinkMetric(final long metric) {
+	public RoundtripTimeMetric(final long metric) {
 		this.metric = metric;
 	}
 
@@ -15,7 +15,7 @@ public class LinkMetric {
 
 	@Override
 	public String toString() {
-		return "LinkMetric{" +
+		return "RoundtripTimeMetric{" +
 				"metric=" + metric +
 				'}';
 	}

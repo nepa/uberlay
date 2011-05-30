@@ -6,10 +6,6 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
 import com.google.protobuf.ByteString;
-import de.uniluebeck.itm.uberlay.router.RoutingTable;
-import de.uniluebeck.itm.uberlay.router.NoRouteToPeerException;
-import de.uniluebeck.itm.uberlay.router.Router;
-import de.uniluebeck.itm.uberlay.router.RouterImpl;
 import de.uniluebeck.itm.uberlay.protocols.up.UP;
 import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;
 import org.jboss.netty.buffer.ChannelBuffer;
@@ -109,12 +105,12 @@ public class RouterTest {
 		);
 
 		when(routingTable.getNextHopChannel(remote1Address)).thenReturn(remote1Channel);
-		when(remote1Channel.write(Matchers.<UP.UPPacket>any())).thenReturn(new SucceededChannelFuture(remote1Channel));
+		when(remote1Channel.write(any())).thenReturn(new SucceededChannelFuture(remote1Channel));
 
 		router.eventSunk(remote1ChannelPipeline, event);
 
 		verify(routingTable).getNextHopChannel(remote1Address);
-		verify(remote1Channel).write(Matchers.<UP.UPPacket>any());
+		verify(remote1Channel).write(any());
 
 		assertTrue(future.isDone());
 	}
@@ -154,12 +150,12 @@ public class RouterTest {
 		final ChannelEvent e = new UpstreamMessageEvent(remote1Channel, fromRemote1ToRemote2Packet, null);
 
 		when(routingTable.getNextHopChannel(remote2Address)).thenReturn(remote2Channel);
-		when(remote2Channel.write(Matchers.<UP.UPPacket>any())).thenReturn(new SucceededChannelFuture(remote2Channel));
+		when(remote2Channel.write(any())).thenReturn(new SucceededChannelFuture(remote2Channel));
 
 		router.handleUpstream(mock(ChannelHandlerContext.class), e);
 
 		verify(routingTable).getNextHopChannel(remote2Address);
-		verify(remote2Channel).write(Matchers.<UP.UPPacket>any());
+		verify(remote2Channel).write(any());
 	}
 
 	@Test
