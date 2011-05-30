@@ -1,7 +1,9 @@
-package de.uniluebeck.itm.uberlay.core.protocols.rtt;
+package de.uniluebeck.itm.uberlay.protocols.rtt;
 
-import de.uniluebeck.itm.uberlay.core.LoggingHandler;
-import de.uniluebeck.itm.uberlay.core.ProtocolRegistry;
+import de.uniluebeck.itm.uberlay.LoggingHandler;
+import de.uniluebeck.itm.uberlay.LoggingHandler;
+import de.uniluebeck.itm.uberlay.ProtocolRegistry;
+import de.uniluebeck.itm.uberlay.ProtocolRegistry;
 import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.channel.ChannelFactory;
 import org.jboss.netty.channel.ChannelPipeline;

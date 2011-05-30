@@ -1,9 +1,9 @@
-package de.uniluebeck.itm.uberlay.core.router;
+package de.uniluebeck.itm.uberlay.router;
 
 import com.google.inject.Inject;
 import com.google.protobuf.ByteString;
-import de.uniluebeck.itm.uberlay.core.protocols.up.UP;
-import de.uniluebeck.itm.uberlay.core.protocols.up.UPAddress;
+import de.uniluebeck.itm.uberlay.protocols.up.UP;
+import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.*;

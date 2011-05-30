@@ -1,4 +1,4 @@
-package de.uniluebeck.itm.uberlay.core.protocols.up;
+package de.uniluebeck.itm.uberlay.protocols.up;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;

@@ -1,4 +1,4 @@
-package de.uniluebeck.itm.uberlay.core;
+package de.uniluebeck.itm.uberlay;
 
 import org.jboss.netty.channel.*;
 import org.slf4j.Logger;

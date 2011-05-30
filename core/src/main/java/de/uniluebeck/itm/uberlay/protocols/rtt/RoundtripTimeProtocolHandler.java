@@ -1,7 +1,7 @@
-package de.uniluebeck.itm.uberlay.core.protocols.rtt;
+package de.uniluebeck.itm.uberlay.protocols.rtt;
 
 
-import de.uniluebeck.itm.uberlay.core.LinkMetric;
+import de.uniluebeck.itm.uberlay.LinkMetric;
 import org.jboss.netty.channel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

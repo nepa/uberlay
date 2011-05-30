@@ -1,9 +1,9 @@
-package de.uniluebeck.itm.uberlay.core;
+package de.uniluebeck.itm.uberlay;
 
 import com.google.common.collect.Maps;
 import com.google.protobuf.MessageLite;
-import de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages;
-import de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeMessages;
+import de.uniluebeck.itm.uberlay.protocols.pvp.PathVectorMessages;
+import de.uniluebeck.itm.uberlay.protocols.rtt.RoundtripTimeMessages;
 
 import java.util.Map;
 

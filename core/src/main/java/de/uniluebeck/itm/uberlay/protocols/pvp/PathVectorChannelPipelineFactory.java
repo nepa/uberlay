@@ -1,9 +1,11 @@
-package de.uniluebeck.itm.uberlay.core.protocols.pvp;
+package de.uniluebeck.itm.uberlay.protocols.pvp;
 
-import de.uniluebeck.itm.uberlay.core.LoggingHandler;
-import de.uniluebeck.itm.uberlay.core.ProtocolRegistry;
-import de.uniluebeck.itm.uberlay.core.router.RoutingTable;
-import de.uniluebeck.itm.uberlay.core.protocols.rtt.RoundtripTimeProtocolHandler;
+import de.uniluebeck.itm.uberlay.LoggingHandler;
+import de.uniluebeck.itm.uberlay.LoggingHandler;
+import de.uniluebeck.itm.uberlay.ProtocolRegistry;
+import de.uniluebeck.itm.uberlay.ProtocolRegistry;
+import de.uniluebeck.itm.uberlay.router.RoutingTable;
+import de.uniluebeck.itm.uberlay.protocols.rtt.RoundtripTimeProtocolHandler;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.handler.codec.protobuf.MultiProtobufDecoder;
 import org.jboss.netty.handler.codec.protobuf.MultiProtobufEncoder;

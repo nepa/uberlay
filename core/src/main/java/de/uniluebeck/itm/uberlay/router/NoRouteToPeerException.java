@@ -1,6 +1,6 @@
-package de.uniluebeck.itm.uberlay.core.router;
+package de.uniluebeck.itm.uberlay.router;
 
-import de.uniluebeck.itm.uberlay.core.protocols.up.UPAddress;
+import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;
 
 public class NoRouteToPeerException extends Exception {
 

@@ -1,7 +1,7 @@
-package de.uniluebeck.itm.uberlay.core.protocols.pvp;
+package de.uniluebeck.itm.uberlay.protocols.pvp;
 
-import de.uniluebeck.itm.uberlay.core.router.RoutingTable;
-import de.uniluebeck.itm.uberlay.core.protocols.up.UPAddress;
+import de.uniluebeck.itm.uberlay.router.RoutingTable;
+import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;
 import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.Channel;

@@ -1,4 +1,4 @@
-package de.uniluebeck.itm.uberlay.core;
+package de.uniluebeck.itm.uberlay;
 
 
 public class Main {
