@@ -1,9 +1,7 @@
 package de.uniluebeck.itm.uberlay.protocols.rtt;
 
-import de.uniluebeck.itm.uberlay.LoggingHandler;
-import de.uniluebeck.itm.uberlay.LoggingHandler;
-import de.uniluebeck.itm.uberlay.ProtocolRegistry;
-import de.uniluebeck.itm.uberlay.ProtocolRegistry;
+import de.uniluebeck.itm.uberlay.DefaultLoggingHandler;
+import de.uniluebeck.itm.uberlay.protocols.ProtocolRegistry;
 import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.channel.ChannelFactory;
 import org.jboss.netty.channel.ChannelPipeline;
@@ -58,7 +56,7 @@ public class TestClient {
 				pipeline.addLast("rttProtocolHandler",
 						new RoundtripTimeProtocolHandler(executorService, 3, TimeUnit.SECONDS)
 				);
-				pipeline.addLast("loggingHandler", new LoggingHandler());
+				pipeline.addLast("loggingHandler", new DefaultLoggingHandler());
 
 				return pipeline;
 			}

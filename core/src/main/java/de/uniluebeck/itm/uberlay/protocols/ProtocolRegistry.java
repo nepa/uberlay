@@ -1,4 +1,4 @@
-package de.uniluebeck.itm.uberlay;
+package de.uniluebeck.itm.uberlay.protocols;
 
 import com.google.common.collect.Maps;
 import com.google.protobuf.MessageLite;

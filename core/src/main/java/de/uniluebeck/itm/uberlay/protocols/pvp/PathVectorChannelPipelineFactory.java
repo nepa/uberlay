@@ -1,9 +1,7 @@
 package de.uniluebeck.itm.uberlay.protocols.pvp;
 
-import de.uniluebeck.itm.uberlay.LoggingHandler;
-import de.uniluebeck.itm.uberlay.LoggingHandler;
-import de.uniluebeck.itm.uberlay.ProtocolRegistry;
-import de.uniluebeck.itm.uberlay.ProtocolRegistry;
+import de.uniluebeck.itm.uberlay.DefaultLoggingHandler;
+import de.uniluebeck.itm.uberlay.protocols.ProtocolRegistry;
 import de.uniluebeck.itm.uberlay.router.RoutingTable;
 import de.uniluebeck.itm.uberlay.protocols.rtt.RoundtripTimeProtocolHandler;
 import org.jboss.netty.channel.*;
@@ -55,7 +53,7 @@ public class PathVectorChannelPipelineFactory implements ChannelPipelineFactory 
 		pipeline.addLast("pvpHandler",
 				new PathVectorProtocolHandler(nodeName, routingTable, executorService, 10, TimeUnit.SECONDS)
 		);
-		pipeline.addLast("loggingHandler", new LoggingHandler());
+		pipeline.addLast("loggingHandler", new DefaultLoggingHandler());
 
 		return pipeline;
 	}

@@ -4,9 +4,9 @@ import org.jboss.netty.channel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LoggingHandler extends SimpleChannelHandler {
+public class DefaultLoggingHandler extends SimpleChannelHandler {
 
-	private final Logger log = LoggerFactory.getLogger(LoggingHandler.class);
+	private final Logger log = LoggerFactory.getLogger(DefaultLoggingHandler.class);
 
 	@Override
 	public void handleUpstream(final ChannelHandlerContext ctx, final ChannelEvent e)
