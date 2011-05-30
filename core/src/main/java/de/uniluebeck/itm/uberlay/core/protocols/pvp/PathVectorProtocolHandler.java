@@ -62,29 +62,6 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 		this.maxDisseminationIntervalTimeUnit = maxDisseminationIntervalTimeUnit;
 	}
 
-	private PathVectorMessages.PathVectorUpdate buildPathVectorUpdateMessage() {
-
-		PathVectorMessages.PathVectorUpdate.Builder updateBuilder = PathVectorMessages.PathVectorUpdate.newBuilder()
-				.setSender(nodeName);
-
-		for (Map.Entry<String, PathVectorRoutingTable.Entry> entry : routingTable.getEntries().entrySet()) {
-
-			String destination = entry.getKey();
-			PathVectorRoutingTable.Entry routingTableEntry = entry.getValue();
-
-			PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder entryBuilder =
-					PathVectorMessages.PathVectorUpdate.RoutingTableEntry.newBuilder()
-							.setDestination(destination)
-							.setCost(routingTableEntry.getCost())
-							.addAllPath(routingTableEntry.getPath());
-
-			updateBuilder.addRoutingTableEntries(entryBuilder);
-
-		}
-
-		return updateBuilder.build();
-	}
-
 	@Override
 	public void channelDisconnected(final ChannelHandlerContext ctx, final ChannelStateEvent e) throws Exception {
 
@@ -112,6 +89,20 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 		super.channelConnected(ctx, e);
 	}
 
+	@Override
+	public void messageReceived(final ChannelHandlerContext ctx, final MessageEvent e) throws Exception {
+
+		if (e.getMessage() instanceof LinkMetric) {
+			lastLinkMetric = (LinkMetric) e.getMessage();
+			super.messageReceived(ctx, e);
+		} else if (e.getMessage() instanceof PathVectorMessages.PathVectorUpdate) {
+			handlePathVectorUpdateMessage((PathVectorMessages.PathVectorUpdate) e.getMessage());
+		} else {
+			super.messageReceived(ctx, e);
+		}
+
+	}
+
 	private void rescheduleRouteDisseminationRunnable(long initialDelay) {
 
 		log.debug("Rescheduling route dissemination runnable for initial delay in {} {}.", initialDelay,
@@ -132,20 +123,6 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 		);
 	}
 
-	@Override
-	public void messageReceived(final ChannelHandlerContext ctx, final MessageEvent e) throws Exception {
-
-		if (e.getMessage() instanceof LinkMetric) {
-			lastLinkMetric = (LinkMetric) e.getMessage();
-			super.messageReceived(ctx, e);
-		} else if (e.getMessage() instanceof PathVectorMessages.PathVectorUpdate) {
-			handlePathVectorUpdateMessage((PathVectorMessages.PathVectorUpdate) e.getMessage());
-		} else {
-			super.messageReceived(ctx, e);
-		}
-
-	}
-
 	private void handlePathVectorUpdateMessage(final PathVectorMessages.PathVectorUpdate message) {
 
 		log.debug("handlePathVectorUpdateMessage()");
@@ -160,7 +137,7 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 
 		// refresh one-hop route to 'sender'
 		log.debug("Refreshing one-hop routing table entry to direct neighbor \"{}\"", sender);
-		routingTable.updateEntry(sender, linkCost, Lists.newArrayList(sender));
+		routingTable.updateEntry(sender, linkCost, Lists.newArrayList(sender), channel);
 
 		// check all routes received by 'sender' if they're shorter than our own routes and add them if so
 		for (PathVectorMessages.PathVectorUpdate.RoutingTableEntry routingTableEntryReceived : entries) {
@@ -179,13 +156,36 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 				// must add 'sender' as path does not contain 'sender' as the path received by him is his view
 				path.add(0, sender);
 
-				sthChanged = routingTable.updateEntry(destination, cost, path) || sthChanged;
+				sthChanged = routingTable.updateEntry(destination, cost, path, channel) || sthChanged;
 			}
 		}
 
 		if (sthChanged) {
 			rescheduleRouteDisseminationRunnable(0);
 		}
+	}
+
+	private PathVectorMessages.PathVectorUpdate buildPathVectorUpdateMessage() {
+
+		PathVectorMessages.PathVectorUpdate.Builder updateBuilder = PathVectorMessages.PathVectorUpdate.newBuilder()
+				.setSender(nodeName);
+
+		for (Map.Entry<String, PathVectorRoutingTable.Entry> entry : routingTable.getEntries().entrySet()) {
+
+			String destination = entry.getKey();
+			PathVectorRoutingTable.Entry routingTableEntry = entry.getValue();
+
+			PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder entryBuilder =
+					PathVectorMessages.PathVectorUpdate.RoutingTableEntry.newBuilder()
+							.setDestination(destination)
+							.setCost(routingTableEntry.getCost())
+							.addAllPath(routingTableEntry.getPath());
+
+			updateBuilder.addRoutingTableEntries(entryBuilder);
+
+		}
+
+		return updateBuilder.build();
 	}
 
 	private long getLinkCostTo() {
