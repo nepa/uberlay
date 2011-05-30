@@ -1,4 +1,4 @@
-package de.uniluebeck.itm.uberlay.core.protocols.router;
+package de.uniluebeck.itm.uberlay.core.router;
 
 import org.jboss.netty.channel.ChannelSink;
 import org.jboss.netty.channel.ChannelUpstreamHandler;

@@ -1,4 +1,4 @@
-package de.uniluebeck.itm.uberlay.core.protocols.router;
+package de.uniluebeck.itm.uberlay.core.router;
 
 import com.google.inject.Inject;
 import com.google.protobuf.ByteString;
