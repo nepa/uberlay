@@ -20,7 +20,7 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 
 	private final String nodeName;
 
-	private final PathVectorRoutingTable routingTable;
+	private final RoutingTable routingTable;
 
 	private final ScheduledExecutorService executorService;
 
@@ -51,7 +51,7 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 
 	private LinkMetric lastLinkMetric;
 
-	public PathVectorProtocolHandler(final String nodeName, final PathVectorRoutingTable routingTable,
+	public PathVectorProtocolHandler(final String nodeName, final RoutingTable routingTable,
 									 final ScheduledExecutorService executorService, final int maxDisseminationInterval,
 									 final TimeUnit maxDisseminationIntervalTimeUnit) {
 
@@ -170,16 +170,16 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 		PathVectorMessages.PathVectorUpdate.Builder updateBuilder = PathVectorMessages.PathVectorUpdate.newBuilder()
 				.setSender(nodeName);
 
-		for (Map.Entry<String, PathVectorRoutingTable.Entry> entry : routingTable.getEntries().entrySet()) {
+		for (Map.Entry<String, RoutingTableEntry> entry : routingTable.getEntries().entrySet()) {
 
 			String destination = entry.getKey();
-			PathVectorRoutingTable.Entry routingTableEntry = entry.getValue();
+			RoutingTableEntry routingTableEntry = entry.getValue();
 
 			PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder entryBuilder =
 					PathVectorMessages.PathVectorUpdate.RoutingTableEntry.newBuilder()
 							.setDestination(destination)
-							.setCost(routingTableEntry.getCost())
-							.addAllPath(routingTableEntry.getPath());
+							.setCost(((RoutingTableEntryImpl) routingTableEntry).getCost())
+							.addAllPath(((RoutingTableEntryImpl) routingTableEntry).getPath());
 
 			updateBuilder.addRoutingTableEntries(entryBuilder);
 

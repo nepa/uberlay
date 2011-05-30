@@ -19,10 +19,10 @@ public class PathVectorChannelPipelineFactory implements ChannelPipelineFactory 
 
 	private final String nodeName;
 
-	private final PathVectorRoutingTable routingTable;
+	private final RoutingTable routingTable;
 
 	public PathVectorChannelPipelineFactory(final ScheduledExecutorService executorService, final String nodeName,
-											final PathVectorRoutingTable routingTable) {
+											final RoutingTable routingTable) {
 
 		this.executorService = executorService;
 		this.nodeName = nodeName;
