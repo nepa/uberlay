@@ -15,7 +15,7 @@ public final class PathVectorMessages {
     boolean hasSender();
     String getSender();
     
-    // repeated .de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorUpdate.RoutingTableEntry routingTableEntries = 2;
+    // repeated .de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorUpdate.RoutingTableEntryImpl routingTableEntries = 2;
     java.util.List<de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry> 
         getRoutingTableEntriesList();
     de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry getRoutingTableEntries(int index);
@@ -72,7 +72,7 @@ public final class PathVectorMessages {
     public static final class RoutingTableEntry extends
         com.google.protobuf.GeneratedMessage
         implements RoutingTableEntryOrBuilder {
-      // Use RoutingTableEntry.newBuilder() to construct.
+      // Use RoutingTableEntryImpl.newBuilder() to construct.
       private RoutingTableEntry(Builder builder) {
         super(builder);
       }
@@ -319,7 +319,7 @@ public final class PathVectorMessages {
           return de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.internal_static_de_uniluebeck_itm_uberlay_core_protocols_pvp_PathVectorUpdate_RoutingTableEntry_fieldAccessorTable;
         }
         
-        // Construct using de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry.newBuilder()
+        // Construct using de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntryImpl.newBuilder()
         private Builder() {
           maybeForceBuilderInitialization();
         }
@@ -601,7 +601,7 @@ public final class PathVectorMessages {
           onChanged();
         }
         
-        // @@protoc_insertion_point(builder_scope:de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorUpdate.RoutingTableEntry)
+        // @@protoc_insertion_point(builder_scope:de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorUpdate.RoutingTableEntryImpl)
       }
       
       static {
@@ -609,7 +609,7 @@ public final class PathVectorMessages {
         defaultInstance.initFields();
       }
       
-      // @@protoc_insertion_point(class_scope:de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorUpdate.RoutingTableEntry)
+      // @@protoc_insertion_point(class_scope:de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorUpdate.RoutingTableEntryImpl)
     }
     
     private int bitField0_;
@@ -645,7 +645,7 @@ public final class PathVectorMessages {
       }
     }
     
-    // repeated .de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorUpdate.RoutingTableEntry routingTableEntries = 2;
+    // repeated .de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorUpdate.RoutingTableEntryImpl routingTableEntries = 2;
     public static final int ROUTINGTABLEENTRIES_FIELD_NUMBER = 2;
     private java.util.List<de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry> routingTableEntries_;
     public java.util.List<de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry> getRoutingTableEntriesList() {
@@ -1038,7 +1038,7 @@ public final class PathVectorMessages {
         onChanged();
       }
       
-      // repeated .de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorUpdate.RoutingTableEntry routingTableEntries = 2;
+      // repeated .de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorUpdate.RoutingTableEntryImpl routingTableEntries = 2;
       private java.util.List<de.uniluebeck.itm.uberlay.core.protocols.pvp.PathVectorMessages.PathVectorUpdate.RoutingTableEntry> routingTableEntries_ =
         java.util.Collections.emptyList();
       private void ensureRoutingTableEntriesIsMutable() {

@@ -2,16 +2,17 @@ package de.uniluebeck.itm.uberlay.core.protocols.pvp;
 
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import de.uniluebeck.itm.tr.util.TimedCache;
+import de.uniluebeck.itm.uberlay.core.protocols.router.RoutingTable;
+import de.uniluebeck.itm.uberlay.core.protocols.router.RoutingTableEntry;
+import de.uniluebeck.itm.uberlay.core.protocols.router.RoutingTableEntryImpl;
+import de.uniluebeck.itm.uberlay.core.protocols.up.UPAddress;
 import org.jboss.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.event.ChangeEvent;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -26,59 +27,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * kept in the table until a configurable timeout occurs. If the entry is updated in the mean time the entry timeout
  * will be reset.
  */
-public class PathVectorRoutingTable {
+public class PathVectorRoutingTable implements RoutingTable {
 
 	private static final Logger log = LoggerFactory.getLogger(PathVectorRoutingTable.class);
 
-	private final String nodeName;
+	private final UPAddress nodeName;
 
 	/**
-	 * A routing table entry. Contains the cost of the complete path and a list of node names, excluding the local node and
-	 * including the destination node.
+	 * The actual routing table as a {@link java.util.Map}, mapping the destination node to an {@link de.uniluebeck.itm.uberlay.core.protocols.router.RoutingTableEntryImpl}.
 	 */
-	public static class Entry {
-
-		private final long cost;
-
-		private final List<String> path;
-
-		private final Channel nextHopChannel;
-
-		private Entry(final long cost, final List<String> path, final Channel nextHopChannel) {
-			this.cost = cost;
-			this.path = path;
-			this.nextHopChannel = nextHopChannel;
-		}
-
-		@Override
-		public String toString() {
-			return "Entry{" +
-					"cost=" + cost +
-					", path=" + Arrays.toString(path.toArray()) +
-					'}';
-		}
-
-		public long getCost() {
-			return cost;
-		}
-
-		public List<String> getPath() {
-			return Lists.newArrayList(path);
-		}
-
-		public String getNextHop() {
-			return path.get(0);
-		}
-
-		public Channel getNextHopChannel() {
-			return nextHopChannel;
-		}
-	}
-
-	/**
-	 * The actual routing table as a {@link java.util.Map}, mapping the destination node to an {@link Entry}.
-	 */
-	private final TimedCache<String, Entry> routingTable;
+	private final TimedCache<UPAddress, RoutingTableEntryImpl> routingTable;
 
 	/**
 	 * Constructs a new routing table instance.
@@ -88,10 +46,10 @@ public class PathVectorRoutingTable {
 	 *                                   it is not updated before the maximum lifetime occurs
 	 * @param cacheEntryLifetimeTimeUnit the time unit of {@code cacheEntryLifeTime}
 	 */
-	public PathVectorRoutingTable(final String nodeName, final int cacheEntryLifetime,
+	public PathVectorRoutingTable(final UPAddress nodeName, final int cacheEntryLifetime,
 								  final TimeUnit cacheEntryLifetimeTimeUnit) {
 		this.nodeName = nodeName;
-		this.routingTable = new TimedCache<String, Entry>(cacheEntryLifetime, cacheEntryLifetimeTimeUnit);
+		this.routingTable = new TimedCache<UPAddress, RoutingTableEntryImpl>(cacheEntryLifetime, cacheEntryLifetimeTimeUnit);
 	}
 
 	/**
@@ -101,64 +59,34 @@ public class PathVectorRoutingTable {
 	 *
 	 * @return {@code true} if the path contains a loop, {@code false} otherwise
 	 */
-	private boolean containsLoop(final List<String> path) {
+	private boolean containsLoop(final List<UPAddress> path) {
 		return path.contains(nodeName) || Sets.newHashSet(path).size() < path.size();
 	}
 
-	/**
-	 * Returns all entries of the routing table as an immutable object.
-	 *
-	 * @return all entries of the routing table
-	 */
-	public synchronized ImmutableMap<String, Entry> getEntries() {
-		return ImmutableMap.copyOf(routingTable);
+	@Override
+	public synchronized ImmutableMap<UPAddress, RoutingTableEntry> getEntries() {
+		return ImmutableMap.<UPAddress, RoutingTableEntry>copyOf(routingTable);
 	}
 
-	/**
-	 * Returns the routing table entry for the given {@code destination}.
-	 *
-	 * @param destination the destination node
-	 *
-	 * @return the routing table entry or {@code null} if no entry exists
-	 */
-	public synchronized Entry getEntry(String destination) {
+	@Override
+	public synchronized RoutingTableEntry getEntry(UPAddress destination) {
 		return routingTable.get(destination);
 	}
 
-	/**
-	 * Returns the next hop for {@code destination}.
-	 *
-	 * @param destination the final destination
-	 *
-	 * @return next hop or {@code null} if no entry was found in the routing table
-	 */
-	public synchronized String getNextHop(String destination) {
-		Entry entry = routingTable.get(destination);
+	@Override
+	public synchronized UPAddress getNextHop(UPAddress destination) {
+		RoutingTableEntry entry = routingTable.get(destination);
 		return entry != null ? entry.getNextHop() : null;
 	}
 
-	/**
-	 * Returns the {@link Channel} instance to the next hop to {@code destination}.
-	 *
-	 * @param destination the final destination
-	 *
-	 * @return next hops {@link Channel} instance or {@code null} if no entry was found in the routing table
-	 */
-	public synchronized Channel getNextHopChannel(String destination) {
-		Entry entry = routingTable.get(destination);
+	@Override
+	public synchronized Channel getNextHopChannel(UPAddress destination) {
+		RoutingTableEntry entry = routingTable.get(destination);
 		return entry != null ? entry.getNextHopChannel() : null;
 	}
 
-	/**
-	 * Updates the routing table entry if cost is cheaper and path contains no loops.
-	 *
-	 * @param destination the destination node
-	 * @param cost		the paths costs
-	 * @param path		the path to the destination node (excluding the own node, including the destination node)
-	 *
-	 * @return {@code true} if updated, {@code false} otherwise
-	 */
-	public synchronized boolean updateEntry(final String destination, final long cost, final List<String> path,
+	@Override
+	public synchronized boolean updateEntry(final UPAddress destination, final long cost, final List<UPAddress> path,
 											final Channel channel) {
 
 		checkNotNull(destination);
@@ -167,12 +95,12 @@ public class PathVectorRoutingTable {
 
 		if (!containsLoop(path)) {
 
-			Entry destinationEntry = routingTable.get(destination);
-			long oldCost = destinationEntry == null ? Long.MAX_VALUE : destinationEntry.cost;
+			RoutingTableEntryImpl destinationEntry = routingTable.get(destination);
+			long oldCost = destinationEntry == null ? Long.MAX_VALUE : destinationEntry.getCost();
 
 			if (cost <= oldCost) {
 
-				Entry entry = new Entry(cost, path, channel);
+				RoutingTableEntryImpl entry = new RoutingTableEntryImpl(cost, path, channel);
 				log.trace("Updating routing table entry: {}", entry);
 				routingTable.put(destination, entry);
 				if (log.isDebugEnabled()) {
@@ -202,15 +130,10 @@ public class PathVectorRoutingTable {
 		}
 	}
 
-	/**
-	 * Removes all routes from the table that have {@code remoteNode} as the next hop. This method may be called e.g., if
-	 * the connection between this host and {@code remoteNode} was dropped and the route is thereby obsolete.
-	 *
-	 * @param remoteNode the next hop node that is now unavailable
-	 */
-	public void removeRoutesOverNextHop(final String remoteNode) {
-		for (Iterator<Map.Entry<String, Entry>> iterator = routingTable.entrySet().iterator(); iterator.hasNext(); ) {
-			Map.Entry<String, Entry> entry = iterator.next();
+	@Override
+	public void removeRoutesOverNextHop(final UPAddress remoteNode) {
+		for (Iterator<Map.Entry<UPAddress, RoutingTableEntryImpl>> iterator = routingTable.entrySet().iterator(); iterator.hasNext(); ) {
+			Map.Entry<UPAddress, RoutingTableEntryImpl> entry = iterator.next();
 			if (entry.getValue().getNextHop().equals(remoteNode)) {
 				iterator.remove();
 			}
@@ -224,7 +147,7 @@ public class PathVectorRoutingTable {
 	private void logRoutingTable() {
 		StringBuilder b = new StringBuilder();
 		b.append("RoutingTable:\n");
-		for (Map.Entry<String, PathVectorRoutingTable.Entry> entry : getEntries().entrySet()) {
+		for (Map.Entry<UPAddress, RoutingTableEntryImpl> entry : ImmutableMap.copyOf(routingTable).entrySet()) {
 			b.append(entry.getKey());
 			b.append(" => [");
 			b.append(entry.getValue().getCost());
