@@ -1,7 +1,9 @@
 package de.uniluebeck.itm.uberlay.protocols.rtt;
 
 
-public class RoundtripTimeMetric {
+import de.uniluebeck.itm.uberlay.LinkMetric;
+
+public class RoundtripTimeMetric implements LinkMetric {
 
 	private final long metric;
 
@@ -9,6 +11,7 @@ public class RoundtripTimeMetric {
 		this.metric = metric;
 	}
 
+	@Override
 	public long getMetric() {
 		return metric;
 	}
