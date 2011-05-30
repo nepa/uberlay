@@ -63,6 +63,7 @@ public class PathVectorRoutingTable implements RoutingTable {
 		return path.contains(nodeName) || Sets.newHashSet(path).size() < path.size();
 	}
 
+
 	@Override
 	public synchronized ImmutableMap<UPAddress, RoutingTableEntry> getEntries() {
 		return ImmutableMap.<UPAddress, RoutingTableEntry>copyOf(routingTable);

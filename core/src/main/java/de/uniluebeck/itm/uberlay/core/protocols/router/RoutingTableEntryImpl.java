@@ -19,7 +19,7 @@ public class RoutingTableEntryImpl implements RoutingTableEntry {
 
 	private final Channel nextHopChannel;
 
-	RoutingTableEntryImpl(final long cost, final List<UPAddress> path, final Channel nextHopChannel) {
+	public RoutingTableEntryImpl(final long cost, final List<UPAddress> path, final Channel nextHopChannel) {
 		this.cost = cost;
 		this.path = path;
 		this.nextHopChannel = nextHopChannel;
