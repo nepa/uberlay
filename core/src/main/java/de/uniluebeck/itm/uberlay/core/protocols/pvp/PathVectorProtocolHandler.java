@@ -4,6 +4,7 @@ package de.uniluebeck.itm.uberlay.core.protocols.pvp;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import de.uniluebeck.itm.uberlay.core.LinkMetric;
+import de.uniluebeck.itm.uberlay.core.protocols.up.UPAddress;
 import org.jboss.netty.channel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +72,7 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 		routeDisseminationRunnableSchedule.cancel(false);
 
 		if (remoteNode != null) {
-			routingTable.removeRoutesOverNextHop(remoteNode);
+			routingTable.removeRoutesOverNextHop(new UPAddress(remoteNode));
 			executorService.execute(disseminationRunnable);
 		}
 
@@ -137,7 +138,8 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 
 		// refresh one-hop route to 'sender'
 		log.debug("Refreshing one-hop routing table entry to direct neighbor \"{}\"", sender);
-		routingTable.updateEntry(sender, linkCost, Lists.newArrayList(sender), channel);
+		final UPAddress senderAddress = new UPAddress(sender);
+		routingTable.updateEntry(senderAddress, linkCost, Lists.newArrayList(senderAddress), channel);
 
 		// check all routes received by 'sender' if they're shorter than our own routes and add them if so
 		for (PathVectorMessages.PathVectorUpdate.RoutingTableEntry routingTableEntryReceived : entries) {
@@ -151,12 +153,14 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 				long entryCost = routingTableEntryReceived.getCost();
 				final long cost = (Long.MAX_VALUE - entryCost) > linkCost ? entryCost + linkCost : Long.MAX_VALUE;
 
-				final List<String> path = Lists.newArrayList(routingTableEntryReceived.getPathList());
+				final List<String> pathReceived = routingTableEntryReceived.getPathList();
+				final List<UPAddress> path = Lists.transform(pathReceived, UPAddress.STRING_TO_ADDRESS);
 
 				// must add 'sender' as path does not contain 'sender' as the path received by him is his view
-				path.add(0, sender);
+				path.add(0, new UPAddress(sender));
 
-				sthChanged = routingTable.updateEntry(destination, cost, path, channel) || sthChanged;
+				final UPAddress destinationAddress = new UPAddress(destination);
+				sthChanged = routingTable.updateEntry(destinationAddress, cost, path, channel) || sthChanged;
 			}
 		}
 
@@ -170,19 +174,23 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 		PathVectorMessages.PathVectorUpdate.Builder updateBuilder = PathVectorMessages.PathVectorUpdate.newBuilder()
 				.setSender(nodeName);
 
-		for (Map.Entry<String, RoutingTableEntry> entry : routingTable.getEntries().entrySet()) {
+		for (Map.Entry<UPAddress, RoutingTableEntry> entry : routingTable.getEntries().entrySet()) {
 
-			String destination = entry.getKey();
-			RoutingTableEntry routingTableEntry = entry.getValue();
+			final UPAddress destination = entry.getKey();
+			final RoutingTableEntry routingTableEntry = entry.getValue();
 
-			PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder entryBuilder =
+			final List<String> path = Lists.transform(
+					((RoutingTableEntryImpl) routingTableEntry).getPath(),
+			        UPAddress.ADDRESS_TO_STRING
+			);
+
+			final PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder entryBuilder =
 					PathVectorMessages.PathVectorUpdate.RoutingTableEntry.newBuilder()
-							.setDestination(destination)
+							.setDestination(destination.getAddress())
 							.setCost(((RoutingTableEntryImpl) routingTableEntry).getCost())
-							.addAllPath(((RoutingTableEntryImpl) routingTableEntry).getPath());
+							.addAllPath(path);
 
 			updateBuilder.addRoutingTableEntries(entryBuilder);
-
 		}
 
 		return updateBuilder.build();

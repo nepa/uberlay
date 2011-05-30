@@ -1,13 +1,11 @@
 package de.uniluebeck.itm.uberlay.core.protocols.pvp;
 
+import de.uniluebeck.itm.uberlay.core.protocols.up.UPAddress;
 import org.jboss.netty.channel.Channel;
 
-/**
- * Created by IntelliJ IDEA. User: bimschas Date: 30.05.11 Time: 10:48 TODO change
- */
 public interface RoutingTableEntry {
 
-	String getNextHop();
+	UPAddress getNextHop();
 
 	Channel getNextHopChannel();
 }

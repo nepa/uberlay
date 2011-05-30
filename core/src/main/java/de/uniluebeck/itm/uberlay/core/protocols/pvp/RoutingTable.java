@@ -1,6 +1,7 @@
 package de.uniluebeck.itm.uberlay.core.protocols.pvp;
 
 import com.google.common.collect.ImmutableMap;
+import de.uniluebeck.itm.uberlay.core.protocols.up.UPAddress;
 import org.jboss.netty.channel.Channel;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface RoutingTable {
 	 *
 	 * @return all entries of the routing table
 	 */
-	ImmutableMap<String, RoutingTableEntry> getEntries();
+	ImmutableMap<UPAddress, RoutingTableEntry> getEntries();
 
 	/**
 	 * Returns the routing table entry for the given {@code destination}.
@@ -21,16 +22,17 @@ public interface RoutingTable {
 	 *
 	 * @return the routing table entry or {@code null} if no entry exists
 	 */
-	RoutingTableEntry getEntry(String destination);
+	RoutingTableEntry getEntry(UPAddress destination);
 
 	/**
 	 * Returns the next hop for {@code destination}.
+	 *
 	 *
 	 * @param destination the final destination
 	 *
 	 * @return next hop or {@code null} if no entry was found in the routing table
 	 */
-	String getNextHop(String destination);
+	UPAddress getNextHop(UPAddress destination);
 
 	/**
 	 * Returns the {@link Channel} instance to the next hop to {@code destination}.
@@ -39,7 +41,7 @@ public interface RoutingTable {
 	 *
 	 * @return next hops {@link Channel} instance or {@code null} if no entry was found in the routing table
 	 */
-	Channel getNextHopChannel(String destination);
+	Channel getNextHopChannel(UPAddress destination);
 
 	/**
 	 * Updates the routing table entry if cost is cheaper and path contains no loops.
@@ -50,7 +52,7 @@ public interface RoutingTable {
 	 *
 	 * @return {@code true} if updated, {@code false} otherwise
 	 */
-	boolean updateEntry(String destination, long cost, List<String> path, Channel channel);
+	boolean updateEntry(UPAddress destination, long cost, List<UPAddress> path, Channel channel);
 
 	/**
 	 * Removes all routes from the table that have {@code remoteNode} as the next hop. This method may be called e.g., if
@@ -58,5 +60,5 @@ public interface RoutingTable {
 	 *
 	 * @param remoteNode the next hop node that is now unavailable
 	 */
-	void removeRoutesOverNextHop(String remoteNode);
+	void removeRoutesOverNextHop(UPAddress remoteNode);
 }
