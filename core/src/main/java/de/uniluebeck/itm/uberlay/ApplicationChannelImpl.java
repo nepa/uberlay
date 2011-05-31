@@ -2,10 +2,10 @@ package de.uniluebeck.itm.uberlay;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;
 import org.jboss.netty.channel.AbstractChannel;
 import org.jboss.netty.channel.ChannelConfig;
 import org.jboss.netty.channel.ChannelPipeline;
+import org.jboss.netty.channel.ChannelSink;
 
 import java.net.SocketAddress;
 
@@ -13,7 +13,7 @@ public class ApplicationChannelImpl extends AbstractChannel implements Applicati
 
 	@Inject
 	ApplicationChannelImpl(@Named(Injection.APPLICATION_PIPELINE) final ChannelPipeline pipeline,
-						   @Named(Injection.APPLICATION_CHANNEL_SINK) final ApplicationChannelSink sink) {
+						   @Named(Injection.APPLICATION_CHANNEL_SINK) final ChannelSink sink) {
 
 		super(null, null, pipeline, sink);
 	}

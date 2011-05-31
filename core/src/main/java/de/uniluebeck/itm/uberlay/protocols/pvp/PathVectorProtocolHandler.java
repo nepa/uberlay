@@ -157,10 +157,13 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 				final long cost = (Long.MAX_VALUE - entryCost) > linkCost ? entryCost + linkCost : Long.MAX_VALUE;
 
 				final List<String> pathReceived = routingTableEntryReceived.getPathList();
-				final List<UPAddress> path = Lists.transform(pathReceived, UPAddress.STRING_TO_ADDRESS);
+				final List<UPAddress> path = Lists.newArrayListWithCapacity(pathReceived.size());
+				for (String node : pathReceived) {
+					path.add(UPAddress.STRING_TO_ADDRESS.apply(node));
+				}
 
 				// must add 'sender' as path does not contain 'sender' as the path received by him is his view
-				path.add(0, new UPAddress(sender));
+				path.add(0, senderAddress);
 
 				final UPAddress destinationAddress = new UPAddress(destination);
 				sthChanged = routingTable.updateEntry(destinationAddress, cost, path, channel) || sthChanged;

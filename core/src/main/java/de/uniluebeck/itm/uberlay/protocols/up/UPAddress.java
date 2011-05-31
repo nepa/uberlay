@@ -25,13 +25,6 @@ public class UPAddress extends SocketAddress {
 
 	private String address;
 
-	public final Predicate<? super UPAddress> EQUALS = new Predicate<UPAddress>() {
-		@Override
-		public boolean apply(final UPAddress input) {
-			return address.equals(input.address);
-		}
-	};
-
 	public UPAddress(final String address) {
 		checkNotNull(address);
 		this.address = address;

@@ -1,5 +1,7 @@
 package de.uniluebeck.itm.uberlay;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import de.uniluebeck.itm.uberlay.protocols.ProtocolRegistry;
 import de.uniluebeck.itm.uberlay.protocols.pvp.PathVectorProtocolHandler;
 import de.uniluebeck.itm.uberlay.protocols.rtt.RoundtripTimeProtocolHandler;
@@ -17,23 +19,20 @@ import java.util.concurrent.TimeUnit;
 
 public class UberlayPipelineFactory implements ChannelPipelineFactory {
 
-	private final ScheduledExecutorService executorService;
+	@Inject
+	private ScheduledExecutorService executorService;
 
-	private final UPAddress localAddress;
+	@Inject
+	@Named(Injection.LOCAL_ADDRESS)
+	private UPAddress localAddress;
 
-	private final RoutingTable routingTable;
+	@Inject
+	private RoutingTable routingTable;
 
-	private final UberlayRouter router;
+	@Inject
+	private UberlayRouter router;
 
-	public UberlayPipelineFactory(final ScheduledExecutorService executorService,
-								  final UPAddress localAddress,
-								  final RoutingTable routingTable,
-								  final UberlayRouter router) {
-
-		this.executorService = executorService;
-		this.localAddress = localAddress;
-		this.routingTable = routingTable;
-		this.router = router;
+	UberlayPipelineFactory() {
 	}
 
 	@Override

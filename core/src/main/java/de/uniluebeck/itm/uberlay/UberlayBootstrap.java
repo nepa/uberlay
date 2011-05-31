@@ -13,7 +13,7 @@ public class UberlayBootstrap {
 	@Inject
 	private UberlayNexus uberlayNexus;
 
-	private UberlayBootstrap() {
+	UberlayBootstrap() {
 	}
 
 	/**

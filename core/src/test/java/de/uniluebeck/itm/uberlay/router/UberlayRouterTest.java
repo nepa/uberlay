@@ -100,7 +100,7 @@ public class UberlayRouterTest {
 						.annotatedWith(Names.named(Injection.UBERLAY_PIPELINE_FACTORY))
 						.toInstance(UberlayPipelineFactory);
 				binder.bind(RoutingTable.class).toInstance(routingTable);
-				binder.bind(UberlayRouter.class).to(UberlayNexus.class);
+				binder.bind(UberlayRouter.class).to(UberlayNexusImpl.class);
 			}
 		}
 		);
