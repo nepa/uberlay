@@ -6,11 +6,12 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
 import com.google.protobuf.ByteString;
+import de.uniluebeck.itm.uberlay.*;
 import de.uniluebeck.itm.uberlay.protocols.up.UP;
 import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.*;
+import org.jboss.netty.util.internal.ExecutorUtil;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,12 +19,15 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
 import static org.jboss.netty.channel.Channels.future;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RouterTest {
+public class UberlayRouterTest {
 
 	private final UPAddress remote1Address = new UPAddress("remote1");
 
@@ -31,9 +35,17 @@ public class RouterTest {
 
 	private final UPAddress localAddress = new UPAddress("local");
 
-	private final ChannelBuffer fromLocalToRemote1Packet = ChannelBuffers.wrappedBuffer(new byte[]{1, 2, 3});
+	private final UP.UPPacket fromLocalToRemote1Packet = UP.UPPacket.newBuilder()
+			.setDestination(remote1Address.toString())
+			.setSource(localAddress.toString())
+			.setPayload(ByteString.copyFrom(new byte[]{1, 2, 3}))
+			.build();
 
-	private final ChannelBuffer fromLocalToLocalPacket = ChannelBuffers.wrappedBuffer(new byte[]{1, 2, 3});
+	private final UP.UPPacket fromLocalToLocalPacket = UP.UPPacket.newBuilder()
+			.setDestination(localAddress.toString())
+			.setSource(localAddress.toString())
+			.setPayload(ByteString.copyFrom(new byte[]{1, 2, 3}))
+			.build();
 
 	private final UP.UPPacket fromRemote1ToLocalPacket = UP.UPPacket.newBuilder()
 			.setDestination(localAddress.toString())
@@ -51,16 +63,13 @@ public class RouterTest {
 	private RoutingTable routingTable;
 
 	@Mock
-	private ChannelDownstreamHandler bottomDownstreamHandler;
+	private Channel applicationChannel;
 
 	@Mock
-	private ChannelUpstreamHandler bottomUpstreamHandler;
+	private ChannelPipeline applicationPipeline;
 
 	@Mock
-	private Channel uberlayChannel;
-
-	@Mock
-	private ChannelPipeline uberlayChannelPipeline;
+	private ChannelPipelineFactory UberlayPipelineFactory;
 
 	@Mock
 	private Channel remote1Channel;
@@ -68,46 +77,52 @@ public class RouterTest {
 	@Mock
 	private Channel remote2Channel;
 
-	@Mock
-	private ChannelPipeline remote1ChannelPipeline;
+	private UberlayRouter router;
 
-	@Mock
-	private ChannelPipeline remote2ChannelPipeline;
-
-	private Router router;
+	private ScheduledExecutorService executorService;
 
 	@Before
 	public void setUp() throws Exception {
 
+		executorService = Executors.newScheduledThreadPool(1);
+
 		final Injector injector = Guice.createInjector(new Module() {
 			@Override
 			public void configure(final Binder binder) {
-				binder.bind(UPAddress.class).annotatedWith(Names.named(Router.INJECTION_NAME_LOCAL_ADDRESS)).toInstance(
-						localAddress
-				);
-				binder.bind(Channel.class).toInstance(uberlayChannel);
+				binder.bind(ScheduledExecutorService.class).toInstance(executorService);
+				binder.bind(UPAddress.class)
+						.annotatedWith(Names.named(Injection.LOCAL_ADDRESS))
+						.toInstance(localAddress);
+				binder.bind(Channel.class)
+						.annotatedWith(Names.named(Injection.APPLICATION_CHANNEL))
+						.toInstance(applicationChannel);
+				binder.bind(ChannelPipelineFactory.class)
+						.annotatedWith(Names.named(Injection.UBERLAY_PIPELINE_FACTORY))
+						.toInstance(UberlayPipelineFactory);
 				binder.bind(RoutingTable.class).toInstance(routingTable);
-				binder.bind(Router.class).to(RouterImpl.class);
+				binder.bind(UberlayRouter.class).to(UberlayNexus.class);
 			}
 		}
 		);
 
-		router = injector.getInstance(Router.class);
+		router = injector.getInstance(UberlayRouter.class);
 
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		ExecutorUtil.terminate(executorService);
 	}
 
 	@Test
 	public void sendPacketToRemotePeer() throws Exception {
 
 		final ChannelFuture future = future(remote1Channel);
-		final ChannelEvent event = new DownstreamMessageEvent(
-				remote1Channel, future, fromLocalToRemote1Packet, remote1Address
-		);
 
 		when(routingTable.getNextHopChannel(remote1Address)).thenReturn(remote1Channel);
 		when(remote1Channel.write(any())).thenReturn(new SucceededChannelFuture(remote1Channel));
 
-		router.eventSunk(remote1ChannelPipeline, event);
+		router.route(fromLocalToRemote1Packet, future);
 
 		verify(routingTable).getNextHopChannel(remote1Address);
 		verify(remote1Channel).write(any());
@@ -118,17 +133,14 @@ public class RouterTest {
 	@Test
 	public void sendPacketToLoopBack() throws Exception {
 
-		final ChannelFuture future = future(uberlayChannel);
-		final ChannelEvent event = new DownstreamMessageEvent(
-				uberlayChannel, future, fromLocalToLocalPacket, localAddress
-		);
+		final ChannelFuture future = future(applicationChannel);
 
-		when(uberlayChannel.getPipeline()).thenReturn(uberlayChannelPipeline);
+		when(applicationChannel.getPipeline()).thenReturn(applicationPipeline);
 
-		router.eventSunk(uberlayChannelPipeline, event);
+		router.route(fromLocalToLocalPacket, future);
 
-		verify(uberlayChannel).getPipeline();
-		verify(uberlayChannelPipeline).sendUpstream(Matchers.<ChannelEvent>any());
+		verify(applicationChannel).getPipeline();
+		verify(applicationPipeline).sendUpstream(Matchers.<ChannelEvent>any());
 	}
 
 	@Test
@@ -136,12 +148,12 @@ public class RouterTest {
 
 		final ChannelEvent e = new UpstreamMessageEvent(remote1Channel, fromRemote1ToLocalPacket, null);
 
-		when(uberlayChannel.getPipeline()).thenReturn(uberlayChannelPipeline);
+		when(applicationChannel.getPipeline()).thenReturn(applicationPipeline);
 
 		router.handleUpstream(mock(ChannelHandlerContext.class), e);
 
-		verify(uberlayChannel).getPipeline();
-		verify(uberlayChannelPipeline).sendUpstream(Matchers.<ChannelEvent>any());
+		verify(applicationChannel).getPipeline();
+		verify(applicationPipeline).sendUpstream(Matchers.<ChannelEvent>any());
 	}
 
 	@Test
@@ -161,14 +173,11 @@ public class RouterTest {
 	@Test
 	public void noRouteToPeer() throws Exception {
 
-		final ChannelFuture future = future(uberlayChannel);
-		final ChannelEvent event = new DownstreamMessageEvent(
-				uberlayChannel, future, fromLocalToRemote1Packet, remote1Address
-		);
+		final ChannelFuture future = future(applicationChannel);
 
 		when(routingTable.getNextHopChannel(remote1Address)).thenReturn(null);
 
-		router.eventSunk(uberlayChannelPipeline, event);
+		router.route(fromLocalToRemote1Packet, future);
 
 		final Throwable cause = future.getCause();
 

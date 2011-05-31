@@ -5,9 +5,9 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import de.uniluebeck.itm.tr.util.TimedCache;
-import de.uniluebeck.itm.uberlay.router.RoutingTable;
-import de.uniluebeck.itm.uberlay.router.RoutingTableEntry;
-import de.uniluebeck.itm.uberlay.router.RoutingTableEntryImpl;
+import de.uniluebeck.itm.uberlay.RoutingTable;
+import de.uniluebeck.itm.uberlay.RoutingTableEntry;
+import de.uniluebeck.itm.uberlay.RoutingTableEntryImpl;
 import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;
 import org.jboss.netty.channel.Channel;
 import org.slf4j.Logger;
@@ -34,7 +34,7 @@ public class PathVectorRoutingTable implements RoutingTable {
 	private final UPAddress nodeName;
 
 	/**
-	 * The actual routing table as a {@link java.util.Map}, mapping the destination node to an {@link de.uniluebeck.itm.uberlay.router.RoutingTableEntryImpl}.
+	 * The actual routing table as a {@link java.util.Map}, mapping the destination node to an {@link de.uniluebeck.itm.uberlay.RoutingTableEntryImpl}.
 	 */
 	private final TimedCache<UPAddress, RoutingTableEntryImpl> routingTable;
 

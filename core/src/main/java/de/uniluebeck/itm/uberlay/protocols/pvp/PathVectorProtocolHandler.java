@@ -3,10 +3,10 @@ package de.uniluebeck.itm.uberlay.protocols.pvp;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import de.uniluebeck.itm.uberlay.LinkMetric;
-import de.uniluebeck.itm.uberlay.router.RoutingTable;
-import de.uniluebeck.itm.uberlay.router.RoutingTableEntry;
-import de.uniluebeck.itm.uberlay.router.RoutingTableEntryImpl;
+import de.uniluebeck.itm.uberlay.*;
+import de.uniluebeck.itm.uberlay.RoutingTable;
+import de.uniluebeck.itm.uberlay.RoutingTableEntry;
+import de.uniluebeck.itm.uberlay.RoutingTableEntryImpl;
 import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;
 import org.jboss.netty.channel.*;
 import org.slf4j.Logger;

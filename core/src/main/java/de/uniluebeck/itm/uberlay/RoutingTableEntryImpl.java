@@ -1,4 +1,4 @@
-package de.uniluebeck.itm.uberlay.router;
+package de.uniluebeck.itm.uberlay;
 
 import com.google.common.collect.Lists;
 import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;

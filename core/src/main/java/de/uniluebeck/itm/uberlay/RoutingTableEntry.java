@@ -1,4 +1,4 @@
-package de.uniluebeck.itm.uberlay.router;
+package de.uniluebeck.itm.uberlay;
 
 import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;
 import org.jboss.netty.channel.Channel;

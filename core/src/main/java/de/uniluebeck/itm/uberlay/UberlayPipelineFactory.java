@@ -1,8 +1,7 @@
-package de.uniluebeck.itm.uberlay.protocols.pvp;
+package de.uniluebeck.itm.uberlay;
 
-import de.uniluebeck.itm.uberlay.DefaultLoggingHandler;
-import de.uniluebeck.itm.uberlay.RoutingTable;
 import de.uniluebeck.itm.uberlay.protocols.ProtocolRegistry;
+import de.uniluebeck.itm.uberlay.protocols.pvp.PathVectorProtocolHandler;
 import de.uniluebeck.itm.uberlay.protocols.rtt.RoundtripTimeProtocolHandler;
 import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;
 import org.jboss.netty.channel.ChannelPipeline;
@@ -16,7 +15,7 @@ import org.jboss.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepend
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class PathVectorChannelPipelineFactory implements ChannelPipelineFactory {
+public class UberlayPipelineFactory implements ChannelPipelineFactory {
 
 	private final ScheduledExecutorService executorService;
 
@@ -24,18 +23,23 @@ public class PathVectorChannelPipelineFactory implements ChannelPipelineFactory 
 
 	private final RoutingTable routingTable;
 
-	public PathVectorChannelPipelineFactory(final ScheduledExecutorService executorService,
-											final UPAddress localAddress,
-											final RoutingTable routingTable) {
+	private final UberlayRouter router;
+
+	public UberlayPipelineFactory(final ScheduledExecutorService executorService,
+								  final UPAddress localAddress,
+								  final RoutingTable routingTable,
+								  final UberlayRouter router) {
 
 		this.executorService = executorService;
 		this.localAddress = localAddress;
 		this.routingTable = routingTable;
+		this.router = router;
 	}
 
+	@Override
 	public ChannelPipeline getPipeline() {
 
-		ChannelPipeline pipeline = Channels.pipeline();
+		final ChannelPipeline pipeline = Channels.pipeline();
 
 		// upstream handlers
 		pipeline.addLast("frameDecoder", new ProtobufVarint32FrameDecoder());
@@ -58,6 +62,7 @@ public class PathVectorChannelPipelineFactory implements ChannelPipelineFactory 
 						localAddress.toString(), routingTable, executorService, 10, TimeUnit.SECONDS
 				)
 		);
+		pipeline.addLast("router", router);
 		pipeline.addLast("loggingHandler", new DefaultLoggingHandler());
 
 		return pipeline;
