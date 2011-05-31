@@ -4,10 +4,10 @@ package de.uniluebeck.itm.uberlay.protocols.pvp;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import de.uniluebeck.itm.uberlay.*;
-import de.uniluebeck.itm.uberlay.RoutingTable;
-import de.uniluebeck.itm.uberlay.RoutingTableEntry;
-import de.uniluebeck.itm.uberlay.RoutingTableEntryImpl;
-import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;
+import de.uniluebeck.itm.uberlay.protocols.up.UPRoutingTable;
+import de.uniluebeck.itm.uberlay.protocols.up.*;
+import de.uniluebeck.itm.uberlay.protocols.up.UPRoutingTableEntry;
+import de.uniluebeck.itm.uberlay.protocols.up.UPRoutingTableEntryImpl;
 import org.jboss.netty.channel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 
 	private final String nodeName;
 
-	private final RoutingTable routingTable;
+	private final UPRoutingTable routingTable;
 
 	private final ScheduledExecutorService executorService;
 
@@ -55,7 +55,7 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 
 	private LinkMetric lastLinkMetric;
 
-	public PathVectorProtocolHandler(final String nodeName, final RoutingTable routingTable,
+	public PathVectorProtocolHandler(final String nodeName, final UPRoutingTable routingTable,
 									 final ScheduledExecutorService executorService, final int maxDisseminationInterval,
 									 final TimeUnit maxDisseminationIntervalTimeUnit) {
 
@@ -180,20 +180,20 @@ public class PathVectorProtocolHandler extends SimpleChannelUpstreamHandler {
 		PathVectorMessages.PathVectorUpdate.Builder updateBuilder = PathVectorMessages.PathVectorUpdate.newBuilder()
 				.setSender(nodeName);
 
-		for (Map.Entry<UPAddress, RoutingTableEntry> entry : routingTable.getEntries().entrySet()) {
+		for (Map.Entry<UPAddress, UPRoutingTableEntry> entry : routingTable.getEntries().entrySet()) {
 
 			final UPAddress destination = entry.getKey();
-			final RoutingTableEntry routingTableEntry = entry.getValue();
+			final UPRoutingTableEntry routingTableEntry = entry.getValue();
 
 			final List<String> path = Lists.transform(
-					((RoutingTableEntryImpl) routingTableEntry).getPath(),
+					((UPRoutingTableEntryImpl) routingTableEntry).getPath(),
 					UPAddress.ADDRESS_TO_STRING
 			);
 
 			final PathVectorMessages.PathVectorUpdate.RoutingTableEntry.Builder entryBuilder =
 					PathVectorMessages.PathVectorUpdate.RoutingTableEntry.newBuilder()
 							.setDestination(destination.toString())
-							.setCost(((RoutingTableEntryImpl) routingTableEntry).getCost())
+							.setCost(((UPRoutingTableEntryImpl) routingTableEntry).getCost())
 							.addAllPath(path);
 
 			updateBuilder.addRoutingTableEntries(entryBuilder);

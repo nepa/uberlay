@@ -6,6 +6,7 @@ import com.google.inject.Singleton;
 import com.google.protobuf.ByteString;
 import de.uniluebeck.itm.uberlay.protocols.up.UP;
 import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;
+import de.uniluebeck.itm.uberlay.protocols.up.UPRoutingTable;
 import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.buffer.ChannelBuffer;
@@ -24,7 +25,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 
 @Singleton
-public class UberlayNexusImpl extends AbstractChannelSink implements UberlayNexus {
+class UberlayNexusImpl extends AbstractChannelSink implements UberlayNexus {
 
 	private static final Logger log = LoggerFactory.getLogger(UberlayNexusImpl.class);
 
@@ -38,7 +39,7 @@ public class UberlayNexusImpl extends AbstractChannelSink implements UberlayNexu
 	private ScheduledExecutorService scheduledExecutorService;
 
 	@Inject
-	private RoutingTable routingTable;
+	private UPRoutingTable routingTable;
 
 	@Inject
 	@Named(Injection.LOCAL_ADDRESS)

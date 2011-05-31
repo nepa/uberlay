@@ -1,6 +1,6 @@
 package de.uniluebeck.itm.uberlay.protocols.pvp;
 
-import de.uniluebeck.itm.uberlay.RoutingTable;
+import de.uniluebeck.itm.uberlay.protocols.up.UPRoutingTable;
 import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;
 import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.bootstrap.ServerBootstrap;
@@ -30,7 +30,7 @@ public class PathVectorPeer {
 		final int localPort = Integer.parseInt(args[2]);
 
 		final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(10);
-		final RoutingTable routingTable = new PathVectorRoutingTable(new UPAddress(nodeName), 1, TimeUnit.MINUTES);
+		final UPRoutingTable routingTable = new PathVectorUPRoutingTable(new UPAddress(nodeName), 1, TimeUnit.MINUTES);
 		final PathVectorChannelPipelineFactory pipelineFactory = new PathVectorChannelPipelineFactory(
 				executorService,
 				new UPAddress(nodeName),

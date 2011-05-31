@@ -6,6 +6,9 @@ import de.uniluebeck.itm.uberlay.protocols.ProtocolRegistry;
 import de.uniluebeck.itm.uberlay.protocols.pvp.PathVectorProtocolHandler;
 import de.uniluebeck.itm.uberlay.protocols.rtt.RoundtripTimeProtocolHandler;
 import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;
+import de.uniluebeck.itm.uberlay.protocols.up.UPRouter;
+import de.uniluebeck.itm.uberlay.protocols.up.UPRoutingTable;
+import de.uniluebeck.itm.uberlay.protocols.upls.UPLSRouter;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
@@ -17,7 +20,7 @@ import org.jboss.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepend
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class UberlayPipelineFactory implements ChannelPipelineFactory {
+class UberlayPipelineFactory implements ChannelPipelineFactory {
 
 	@Inject
 	private ScheduledExecutorService executorService;
@@ -27,10 +30,13 @@ public class UberlayPipelineFactory implements ChannelPipelineFactory {
 	private UPAddress localAddress;
 
 	@Inject
-	private RoutingTable routingTable;
+	private UPRoutingTable routingTable;
 
 	@Inject
-	private UberlayRouter router;
+	private UPRouter router;
+
+	@Inject
+	private UPLSRouter uplsRouter;
 
 	UberlayPipelineFactory() {
 	}
@@ -61,6 +67,7 @@ public class UberlayPipelineFactory implements ChannelPipelineFactory {
 						localAddress.toString(), routingTable, executorService, 10, TimeUnit.SECONDS
 				)
 		);
+		pipeline.addLast("upls-router", uplsRouter);
 		pipeline.addLast("router", router);
 		pipeline.addLast("loggingHandler", new DefaultLoggingHandler());
 

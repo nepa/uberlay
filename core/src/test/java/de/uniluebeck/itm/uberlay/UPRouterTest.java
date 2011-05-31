@@ -1,4 +1,4 @@
-package de.uniluebeck.itm.uberlay.router;
+package de.uniluebeck.itm.uberlay;
 
 import com.google.inject.Binder;
 import com.google.inject.Guice;
@@ -6,9 +6,10 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
 import com.google.protobuf.ByteString;
-import de.uniluebeck.itm.uberlay.*;
 import de.uniluebeck.itm.uberlay.protocols.up.UP;
 import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;
+import de.uniluebeck.itm.uberlay.protocols.up.UPRouter;
+import de.uniluebeck.itm.uberlay.protocols.up.UPRoutingTable;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.util.internal.ExecutorUtil;
 import org.junit.After;
@@ -27,7 +28,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UberlayRouterTest {
+public class UPRouterTest {
 
 	private final UPAddress remote1Address = new UPAddress("remote1");
 
@@ -60,7 +61,7 @@ public class UberlayRouterTest {
 			.build();
 
 	@Mock
-	private RoutingTable routingTable;
+	private UPRoutingTable routingTable;
 
 	@Mock
 	private Channel applicationChannel;
@@ -77,7 +78,7 @@ public class UberlayRouterTest {
 	@Mock
 	private Channel remote2Channel;
 
-	private UberlayRouter router;
+	private UPRouter router;
 
 	private ScheduledExecutorService executorService;
 
@@ -99,13 +100,13 @@ public class UberlayRouterTest {
 				binder.bind(ChannelPipelineFactory.class)
 						.annotatedWith(Names.named(Injection.UBERLAY_PIPELINE_FACTORY))
 						.toInstance(UberlayPipelineFactory);
-				binder.bind(RoutingTable.class).toInstance(routingTable);
-				binder.bind(UberlayRouter.class).to(UberlayNexusImpl.class);
+				binder.bind(UPRoutingTable.class).toInstance(routingTable);
+				binder.bind(UPRouter.class).to(UberlayNexusImpl.class);
 			}
 		}
 		);
 
-		router = injector.getInstance(UberlayRouter.class);
+		router = injector.getInstance(UPRouter.class);
 
 	}
 

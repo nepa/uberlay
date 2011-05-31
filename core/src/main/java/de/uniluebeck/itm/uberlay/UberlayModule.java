@@ -3,8 +3,12 @@ package de.uniluebeck.itm.uberlay;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
-import de.uniluebeck.itm.uberlay.protocols.pvp.PathVectorRoutingTable;
+import de.uniluebeck.itm.uberlay.protocols.pvp.PathVectorUPRoutingTable;
 import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;
+import de.uniluebeck.itm.uberlay.protocols.up.UPRouter;
+import de.uniluebeck.itm.uberlay.protocols.up.UPRoutingTable;
+import de.uniluebeck.itm.uberlay.protocols.upls.UPLSRouter;
+import de.uniluebeck.itm.uberlay.protocols.upls.UPLSRouterImpl;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
@@ -51,9 +55,6 @@ public class UberlayModule implements Module {
 				.annotatedWith(Names.named(Injection.APPLICATION_CHANNEL_SINK))
 				.to(UberlayNexusImpl.class);
 
-		binder.bind(UberlayRouter.class)
-				.to(UberlayNexusImpl.class);
-
 		binder.bind(UberlayNexus.class)
 				.to(UberlayNexusImpl.class);
 
@@ -61,7 +62,13 @@ public class UberlayModule implements Module {
 				.annotatedWith(Names.named(Injection.UBERLAY_PIPELINE_FACTORY))
 				.to(UberlayPipelineFactory.class);
 
-		binder.bind(RoutingTable.class)
-				.toInstance(new PathVectorRoutingTable(localAddress, 1, TimeUnit.MINUTES));
+		binder.bind(UPRouter.class)
+				.to(UberlayNexusImpl.class);
+
+		binder.bind(UPLSRouter.class)
+				.to(UPLSRouterImpl.class);
+
+		binder.bind(UPRoutingTable.class)
+				.toInstance(new PathVectorUPRoutingTable(localAddress, 1, TimeUnit.MINUTES));
 	}
 }

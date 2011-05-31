@@ -1,7 +1,6 @@
-package de.uniluebeck.itm.uberlay;
+package de.uniluebeck.itm.uberlay.protocols.up;
 
 import com.google.common.collect.Lists;
-import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;
 import org.jboss.netty.channel.Channel;
 
 import java.util.Arrays;
@@ -11,7 +10,7 @@ import java.util.List;
  * A routing table entry. Contains the cost of the complete path and a list of node names, excluding the local node and
  * including the destination node.
  */
-public class RoutingTableEntryImpl implements RoutingTableEntry {
+public class UPRoutingTableEntryImpl implements UPRoutingTableEntry {
 
 	private final long cost;
 
@@ -19,7 +18,7 @@ public class RoutingTableEntryImpl implements RoutingTableEntry {
 
 	private final Channel nextHopChannel;
 
-	public RoutingTableEntryImpl(final long cost, final List<UPAddress> path, final Channel nextHopChannel) {
+	public UPRoutingTableEntryImpl(final long cost, final List<UPAddress> path, final Channel nextHopChannel) {
 		this.cost = cost;
 		this.path = path;
 		this.nextHopChannel = nextHopChannel;
@@ -27,7 +26,7 @@ public class RoutingTableEntryImpl implements RoutingTableEntry {
 
 	@Override
 	public String toString() {
-		return "RoutingTableEntryImpl{" +
+		return "UPRoutingTableEntryImpl{" +
 				"cost=" + cost +
 				", path=" + Arrays.toString(path.toArray()) +
 				'}';

@@ -1,19 +1,18 @@
-package de.uniluebeck.itm.uberlay;
+package de.uniluebeck.itm.uberlay.protocols.up;
 
 import com.google.common.collect.ImmutableMap;
-import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;
 import org.jboss.netty.channel.Channel;
 
 import java.util.List;
 
-public interface RoutingTable {
+public interface UPRoutingTable {
 
 	/**
 	 * Returns all entries of the routing table as an immutable object.
 	 *
 	 * @return all entries of the routing table
 	 */
-	ImmutableMap<UPAddress, RoutingTableEntry> getEntries();
+	ImmutableMap<UPAddress, UPRoutingTableEntry> getEntries();
 
 	/**
 	 * Returns the routing table entry for the given {@code destination}.
@@ -22,7 +21,7 @@ public interface RoutingTable {
 	 *
 	 * @return the routing table entry or {@code null} if no entry exists
 	 */
-	RoutingTableEntry getEntry(UPAddress destination);
+	UPRoutingTableEntry getEntry(UPAddress destination);
 
 	/**
 	 * Returns the next hop for {@code destination}.

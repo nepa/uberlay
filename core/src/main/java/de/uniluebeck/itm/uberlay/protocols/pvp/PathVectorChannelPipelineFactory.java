@@ -1,7 +1,7 @@
 package de.uniluebeck.itm.uberlay.protocols.pvp;
 
 import de.uniluebeck.itm.uberlay.DefaultLoggingHandler;
-import de.uniluebeck.itm.uberlay.RoutingTable;
+import de.uniluebeck.itm.uberlay.protocols.up.UPRoutingTable;
 import de.uniluebeck.itm.uberlay.protocols.ProtocolRegistry;
 import de.uniluebeck.itm.uberlay.protocols.rtt.RoundtripTimeProtocolHandler;
 import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;
@@ -22,11 +22,11 @@ public class PathVectorChannelPipelineFactory implements ChannelPipelineFactory 
 
 	private final UPAddress localAddress;
 
-	private final RoutingTable routingTable;
+	private final UPRoutingTable routingTable;
 
 	public PathVectorChannelPipelineFactory(final ScheduledExecutorService executorService,
 											final UPAddress localAddress,
-											final RoutingTable routingTable) {
+											final UPRoutingTable routingTable) {
 
 		this.executorService = executorService;
 		this.localAddress = localAddress;
