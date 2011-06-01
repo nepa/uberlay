@@ -15,6 +15,9 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class UPLSRouterTest {
 
+	@Test
+	public void test(){
 
+	}
 
 }
