@@ -3,9 +3,11 @@ package de.uniluebeck.itm.uberlay;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.inject.Guice;
 import de.uniluebeck.itm.uberlay.protocols.up.UPAddress;
+import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
+import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.handler.codec.string.StringDecoder;
 import org.jboss.netty.handler.codec.string.StringEncoder;
 import org.jboss.netty.util.CharsetUtil;
@@ -49,16 +51,14 @@ public class UberlayMain {
 				new ThreadFactoryBuilder().setNameFormat("Uberlay %d").build()
 		);
 
-		final UberlayModule uberlayModule = new UberlayModule(
-				executorService,
-				localUPAddress,
-				pipeline(
-						new StringEncoder(CharsetUtil.UTF_8),
-						new StringDecoder(CharsetUtil.UTF_8),
-						new DefaultLoggingHandler()
-				)
+		// construct the application channel that holds application specific protocols and handlers
+		final ChannelPipeline applicationPipeline = pipeline(
+				new StringEncoder(CharsetUtil.UTF_8),
+				new StringDecoder(CharsetUtil.UTF_8),
+				new DefaultLoggingHandler()
 		);
 
+		final UberlayModule uberlayModule = new UberlayModule(executorService, localUPAddress, applicationPipeline);
 		final UberlayBootstrap bootstrap = Guice.createInjector(uberlayModule).getInstance(UberlayBootstrap.class);
 
 		log.info("Binding local server socket on {}:{}...", localSocketAddress.getHostName(),
@@ -97,7 +97,12 @@ public class UberlayMain {
 			final String[] split = input.split(" ");
 			if (!"exit".equals(input) && split.length > 1) {
 				log.info("Sending \"" + split[0] + "\" to \"" + split[1] + "\".");
-				applicationChannel.write(ChannelBuffers.wrappedBuffer(split[0].getBytes()), new UPAddress(split[1])).awaitUninterruptibly();
+
+				final ChannelBuffer buffer = ChannelBuffers.wrappedBuffer(split[0].getBytes());
+				final UPAddress remoteAddress = new UPAddress(split[1]);
+
+				applicationChannel.write(buffer, remoteAddress).awaitUninterruptibly();
+
 				log.info("Sending done.");
 			}
 		}

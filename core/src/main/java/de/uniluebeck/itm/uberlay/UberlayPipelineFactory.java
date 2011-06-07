@@ -62,12 +62,12 @@ class UberlayPipelineFactory implements ChannelPipelineFactory {
 		pipeline.addLast("rttProtocolHandler",
 				new RoundtripTimeProtocolHandler(executorService, 10, TimeUnit.SECONDS)
 		);
+		pipeline.addLast("upls-router", uplsRouter);
 		pipeline.addLast("pvpHandler",
 				new PathVectorProtocolHandler(
 						localAddress.toString(), routingTable, executorService, 10, TimeUnit.SECONDS
 				)
 		);
-		pipeline.addLast("upls-router", uplsRouter);
 		pipeline.addLast("router", router);
 		pipeline.addLast("loggingHandler", new DefaultLoggingHandler());
 
